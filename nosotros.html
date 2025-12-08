@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nosotros - Corte Láser Siddhi</title>
+
+    <!-- ICONOS -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --negro: #0a0a0a;
+            --blanco: #ffffff;
+            --azul-suave: #4A90E2;
+            --vino: #B71C75;
+            --gris-frio: #edf2f7;
+            --fuente: "Poppins", sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--fuente);
+        }
+
+        body {
+            background: var(--gris-frio);
+            color: var(--negro);
+        }
+
+        /* ---------------- HEADER ----------------- */
+        .header {
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--negro);
+            color: var(--blanco);
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            width: 40px;
+        }
+
+        .logo span {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-item {
+            color: var(--blanco);
+            text-decoration: none;
+            font-size: .8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: .3s;
+        }
+
+        .nav-item:hover {
+            color: var(--azul-suave);
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        /* ---------------- HERO ----------------- */
+        .hero {
+            margin-top: 90px;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--vino);
+        }
+
+        .hero p {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* ---------------- SECCIONES ----------------- */
+
+        .section {
+            max-width: 900px;
+            margin: 3rem auto;
+            padding: 2.5rem;
+            background: var(--blanco);
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--vino);
+        }
+
+        .section p {
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        /* EQUIPO */
+        .team {
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .member {
+            background: var(--gris-frio);
+            padding: 1.7rem;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid #d4d4d4;
+            transition: .3s;
+        }
+
+        .member:hover {
+            transform: translateY(-5px);
+            border-color: var(--vino);
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .member img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: .8rem;
+            border: 3px solid var(--vino);
+        }
+
+        .member h4 {
+            margin-bottom: .3rem;
+            font-size: 1.2rem;
+        }
+
+        .member span {
+            font-size: .9rem;
+            opacity: .7;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--negro);
+            color: var(--blanco);
+            margin-top: 3rem;
+        }
+
+        /* RESPONSIVE */
+        @media(max-width: 600px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <img src="logo.png" alt="Logo">
+            <span>SIDDHI</span>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html" class="nav-item"><i data-lucide="home"></i><span>Inicio</span></a>
+            <a href="catalogo.html" class="nav-item"><i data-lucide="package"></i><span>Catálogo</span></a>
+            <a href="ubicacion.html" class="nav-item"><i data-lucide="map-pin"></i><span>Ubicación</span></a>
+            <a href="nosotros.html" class="nav-item"><i data-lucide="users"></i><span>Nosotros</span></a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Sobre Nosotros</h1>
+        <p>Corte Láser Siddhi — Precisión, diseño y calidad desde Zumpango.</p>
+    </section>
+
+    <!-- MISIÓN -->
+    <div class="section">
+        <h2>Nuestra Misión</h2>
+        <p>
+            Brindar soluciones de corte láser de alta precisión, con un enfoque en calidad profesional,
+            rapidez y diseño optimizado para emprendedores, empresas y proyectos personalizados.
+        </p>
+    </div>
+
+    <!-- VISIÓN -->
+    <div class="section">
+        <h2>Visión</h2>
+        <p>
+            Ser el referente número uno en la región en servicios de corte láser e innovación,
+            expandiendo nuestras capacidades y acercando la fabricación digital a todo México.
+        </p>
+    </div>
+
+    <!-- EQUIPO -->
+    <div class="section">
+        <h2>Nuestro Equipo</h2>
+        <div class="team">
+            <div class="member">
+                <img src="equipo1.jpg" alt="">
+                <h4>Juan Pérez</h4>
+                <span>Operador de Láser</span>
+            </div>
+
+            <div class="member">
+                <img src="equipo2.jpg" alt="">
+                <h4>María López</h4>
+                <span>Diseñadora Técnica</span>
+            </div>
+
+            <div class="member">
+                <img src="equipo3.jpg" alt="">
+                <h4>Carlos Sánchez</h4>
+                <span>Supervisor de Calidad</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2025 Corte Láser Siddhi – Todos los derechos reservados
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>
