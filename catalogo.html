@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIDDHI - Catálogo y Carrito</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<header>
+    <h1>SIDDHI Corte Láser</h1>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="ubicacion.html">Ubicación</a>
+        <a href="catalogo.html" class="activo">Catálogo</a>
+    </nav>
+</header>
+
+<section class="contenido">
+    <h2>Catálogo de productos</h2>
+
+    <!-- CATEGORÍAS -->
+    <div class="categorias">
+        <button onclick="filtrar('todos')">Todos</button>
+        <button onclick="filtrar('decoracion')">Decoración</button>
+        <button onclick="filtrar('letras')">Letras</button>
+        <button onclick="filtrar('regalos')">Regalos</button>
+        <button onclick="filtrar('personalizados')">Personalizados</button>
+    </div>
+
+    <!-- PRODUCTOS -->
+    <div class="productos" id="lista-productos">
+        <!-- Se llena con JavaScript -->
+    </div>
+
+    <!-- CARRITO -->
+    <div class="carrito">
+        <h3>Carrito de compras</h3>
+        <ul id="carrito-lista"></ul>
+
+        <p class="total">Total: $<span id="carrito-total">0</span></p>
+
+        <button class="btn" onclick="vaciarCarrito()">Vaciar carrito</button>
+        <button class="btn" onclick="enviarWhatsApp()">Enviar por WhatsApp</button>
+    </div>
+</section>
+
+<script src="js/app.js"></script>
+</body>
+</html>

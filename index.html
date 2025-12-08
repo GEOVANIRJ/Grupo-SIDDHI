@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corte Láser Siddhi</title>
+
+    <!-- ICONOS -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- ==================== CSS COMPLETOsiuuu ==================== -->
+    <style>
+        :root {
+            --negro: #0a0a0a;
+            --blanco: #ffffff;
+            --azul-suave: #4A90E2;
+            --vino: #B71C75;
+
+            --fondo-oscuro: rgba(0, 0, 0, 0.55);
+            --blur: blur(6px);
+            --fuente: "Poppins", sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--fuente);
+        }
+
+        body {
+            background: var(--negro);
+            color: var(--blanco);
+        }
+
+        /* ------------------------- */
+        /*          HEADER           */
+        /* ------------------------- */
+        .header {
+            width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--negro);
+            border-bottom: 1px solid #222;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .logo img {
+            width: 45px;
+        }
+
+        .logo span {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-item {
+            color: var(--blanco);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: .8rem;
+            transition: .3s;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            transition: .3s;
+        }
+
+        /* ------------------------- */
+        /*      HOME HERO SECTION    */
+        /* ------------------------- */
+
+        #home {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2rem;
+
+            background-image: url("fondo-home2.png"); /* <-- AQUÍ PONES TU IMAGEN */
+            background-size: cover;
+            background-position: center;
+        }
+
+        #home::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--fondo-oscuro);
+            backdrop-filter: var(--blur);
+            z-index: 1;
+        }
+
+        .home-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .home-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: .5rem;
+        }
+
+        .home-content p {
+            font-size: 1.2rem;
+            opacity: .9;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn {
+            background: var(--azul-suave);
+            color: var(--blanco);
+            padding: .8rem 1.8rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: .3s;
+        }
+
+        .btn:hover {
+            background: var(--vino);
+        }
+    </style>
+    <!-- ====================================================== -->
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <h3>CORTE LÁSER ZUMPANGO</h3>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html" class="nav-item" data-color="#4A90E2">
+                <i data-lucide="home"></i>
+                <span>Inicio</span>
+            </a>
+
+            <a href="catalogo.html" class="nav-item" data-color="#B71C75">
+                <i data-lucide="package"></i>
+                <span>Catálogo</span>
+            </a>
+
+            <a href="ubicacion.html" class="nav-item" data-color="#4A90E2">
+                <i data-lucide="map-pin"></i>
+                <span>Ubicación</span>
+            </a>
+
+            <a href="nosotros.html" class="nav-item" data-color="#B71C75">
+                <i data-lucide="users"></i>
+                <span>Nosotros</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section id="home">
+        <div class="home-content">
+            <h1> GRUPO SIDDHI </h1>
+            <p>Diseño y corte de precisión en Zumpango</p>
+            <a href="catalogo.html" class="btn">Ver catálogo</a>
+        </div>
+    </section>
+
+<script>
+    lucide.createIcons();
+
+    // cambio de color de iconos
+    document.querySelectorAll(".nav-item").forEach(item => {
+        const icon = item.querySelector("svg");
+        const color = item.dataset.color;
+
+        item.addEventListener("mouseenter", () => {
+            icon.style.color = color;
+            item.style.color = color;
+        });
+
+        item.addEventListener("mouseleave", () => {
+            icon.style.color = "";
+            item.style.color = "";
+        });
+    });
+</script>
+
+</body>
+</html>
