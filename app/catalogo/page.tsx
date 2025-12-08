@@ -56,7 +56,6 @@ export default function Catalogo() {
       localStorage.setItem('carrito', JSON.stringify(carrito));
       window.dispatchEvent(new Event('cartUpdated'));
       
-      // Feedback visual
       const button = document.getElementById(`btn-${id}`);
       if (button) {
         button.textContent = '¡Agregado!';
@@ -68,7 +67,7 @@ export default function Catalogo() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-black dark:to-gray-950 text-black dark:text-white transition-colors duration-300">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-black transition-colors duration-300">
       <Header />
       <div className="pt-32">
         {/* Hero Section */}
@@ -94,21 +93,21 @@ export default function Catalogo() {
 
           {/* Stats Section */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 text-center">
+            <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
               <p className="text-3xl font-bold bg-gradient-to-r from-[#2959c7] to-[#ff2e55] bg-clip-text text-transparent">{PRODUCTOS.length}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Productos</p>
+              <p className="text-sm text-gray-600 mt-1">Productos</p>
             </div>
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 text-center">
+            <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
               <p className="text-3xl font-bold bg-gradient-to-r from-[#ff2e55] to-[#2959c7] bg-clip-text text-transparent">{categorias.length - 1}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Categorías</p>
+              <p className="text-sm text-gray-600 mt-1">Categorías</p>
             </div>
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 text-center">
+            <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
               <p className="text-3xl font-bold bg-gradient-to-r from-[#2959c7] to-[#ff2e55] bg-clip-text text-transparent">{PRODUCTOS.filter(p => p.nuevo).length}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Nuevos</p>
+              <p className="text-sm text-gray-600 mt-1">Nuevos</p>
             </div>
-            <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 text-center">
+            <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
               <p className="text-3xl font-bold bg-gradient-to-r from-[#ff2e55] to-[#2959c7] bg-clip-text text-transparent">{PRODUCTOS.filter(p => p.destacado).length}</p>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Destacados</p>
+              <p className="text-sm text-gray-600 mt-1">Destacados</p>
             </div>
           </div>
 
@@ -132,7 +131,7 @@ export default function Catalogo() {
                     className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
                       isActive
                         ? `bg-gradient-to-r ${gradientColor} text-white shadow-lg transform scale-105`
-                        : 'bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-800'
+                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                     }`}
                   >
                     {Icon && <Icon size={18} />}
@@ -148,7 +147,7 @@ export default function Catalogo() {
             {productos.map(producto => (
               <div
                 key={producto.id}
-                className="group bg-white dark:bg-gray-900 rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl border border-gray-200 dark:border-gray-800"
+                className="group bg-white rounded-2xl overflow-hidden hover:transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl border border-gray-200"
               >
                 <div className="relative overflow-hidden">
                   <img
@@ -175,18 +174,18 @@ export default function Catalogo() {
                 
                 <div className="p-5">
                   <div className="mb-3">
-                    <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                       {producto.categoria}
                     </span>
                   </div>
-                  <h3 className="text-lg font-bold mb-3 dark:text-white group-hover:text-[#ff2e55] dark:group-hover:text-[#ff2e55] transition-colors">
+                  <h3 className="text-lg font-bold mb-3 group-hover:text-[#ff2e55] transition-colors">
                     {producto.nombre}
                   </h3>
                   <div className="flex items-center justify-between mb-4">
-                    <p className="text-gray-600 dark:text-gray-300 text-3xl font-bold">
+                    <p className="text-gray-600 text-3xl font-bold">
                       ${producto.precio}
                     </p>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">MXN</span>
+                    <span className="text-xs text-gray-500">MXN</span>
                   </div>
                   <button
                     id={`btn-${producto.id}`}
@@ -204,9 +203,9 @@ export default function Catalogo() {
           {/* Empty State */}
           {productos.length === 0 && (
             <div className="text-center py-20">
-              <Package size={64} className="mx-auto text-gray-300 dark:text-gray-700 mb-4" />
-              <h3 className="text-2xl font-bold mb-2 dark:text-white">No hay productos</h3>
-              <p className="text-gray-600 dark:text-gray-400">
+              <Package size={64} className="mx-auto text-gray-300 mb-4" />
+              <h3 className="text-2xl font-bold mb-2">No hay productos</h3>
+              <p className="text-gray-600">
                 No se encontraron productos en esta categoría
               </p>
             </div>

@@ -119,7 +119,7 @@ export default function HomePage() {
             style={{ backgroundImage: 'url("/fondo-home2.png")' }}
           />
           {/* overlay para mejorar contraste del texto (light/dark) */}
-          <div className="absolute inset-0 z-10 bg-white/30 dark:bg-black/60" />
+          <div className="absolute inset-0 z-10 bg-white/30" />
 
           {/* Elementos decorativos */}
           <div className="absolute top-20 left-10 w-64 h-64 bg-gray-700 rounded-full mix-blend-multiply filter blur-3xl opacity-20 z-10"></div>

@@ -1,6 +1,5 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { DarkModeProvider } from '@/context/DarkModeContext';
 
 export const metadata: Metadata = {
   title: 'Grupo SIDDHI - Corte y Grabado Láser',
@@ -27,9 +26,7 @@ export default function RootLayout({
   <meta name="theme-color" content="#ffffff" />
 </head>
       <body>
-        <DarkModeProvider>
-          {children}
-        </DarkModeProvider>
+        {children}
       </body>
     </html>
   );
