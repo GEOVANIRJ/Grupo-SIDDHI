@@ -85,6 +85,24 @@ export default function HomePage() {
         .nav-icon-hover {
           transition: all 0.3s ease;
         }
+        
+        /* Ken Burns background animation */
+        @keyframes kenburns {
+          0% {
+            transform: scale(1) translateY(0);
+            filter: brightness(0.9) saturate(1);
+          }
+          100% {
+            transform: scale(1.12) translateY(-4%);
+            filter: brightness(0.95) saturate(1.03);
+          }
+        }
+
+        .bg-kenburns {
+          animation: kenburns 24s ease-in-out infinite alternate;
+          transform-origin: center;
+          will-change: transform, filter;
+        }
       `}</style>
 
       {/* HEADER */}
@@ -93,15 +111,19 @@ export default function HomePage() {
       {/* HERO */}
       <section 
         className="relative h-screen w-full flex items-center justify-center pt-20 overflow-hidden"
-        style={{
-          backgroundImage: 'linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))',
-          backgroundColor: '#0a0a0a'
-        }}
       >
-        {/* Elementos decorativos */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-64 h-64 bg-gray-700 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
-          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gray-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+        {/* Fondo con animación Ken Burns (usa imagen en public/) */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <div
+            className="absolute inset-0 bg-center bg-cover bg-kenburns z-0"
+            style={{ backgroundImage: 'url("/fondo-home2.png")' }}
+          />
+          {/* overlay para mejorar contraste del texto (light/dark) */}
+          <div className="absolute inset-0 z-10 bg-white/30 dark:bg-black/60" />
+
+          {/* Elementos decorativos */}
+          <div className="absolute top-20 left-10 w-64 h-64 bg-gray-700 rounded-full mix-blend-multiply filter blur-3xl opacity-20 z-10"></div>
+          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gray-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 z-10"></div>
         </div>
 
         <div className="text-center z-10 px-4">
