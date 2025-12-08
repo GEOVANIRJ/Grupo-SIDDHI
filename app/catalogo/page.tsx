@@ -3,7 +3,6 @@
 import Header from '@/components/Header';
 import { useState } from 'react';
 import { ShoppingCart, Package, Tag, Sparkles, TrendingUp } from 'lucide-react';
-import Cart from '../../components/Cart';
 
 interface Producto {
   id: number;
@@ -52,7 +51,30 @@ export default function Catalogo() {
     const producto = PRODUCTOS.find(p => p.id === id);
     if (producto) {
       const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
-      carrito.push(producto);
+      
+      // Buscar si el producto ya está en el carrito
+      const itemExistente = carrito.find((item: any) => item.id === String(id));
+      
+      if (itemExistente) {
+        // Si existe, incrementar la cantidad
+        itemExistente.cantidad = (itemExistente.cantidad || 1) + 1;
+        const newQuantity = itemExistente.cantidad;
+        window.dispatchEvent(new CustomEvent('cartAction', { 
+          detail: { message: `Cantidad actualizada a ${newQuantity}` }
+        }));
+      } else {
+        // Si no existe, agregarlo con cantidad 1
+        carrito.push({
+          id: String(id),
+          nombre: producto.nombre,
+          precio: producto.precio,
+          cantidad: 1
+        });
+        window.dispatchEvent(new CustomEvent('cartAction', { 
+          detail: { message: `¡${producto.nombre} agregado al carrito!` }
+        }));
+      }
+      
       localStorage.setItem('carrito', JSON.stringify(carrito));
       window.dispatchEvent(new Event('cartUpdated'));
       
@@ -86,11 +108,6 @@ export default function Catalogo() {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-12">
-          {/* Carrito */}
-          <div className="mb-12">
-            <Cart />
-          </div>
-
           {/* Stats Section */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
