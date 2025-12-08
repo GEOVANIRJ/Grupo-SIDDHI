@@ -20,8 +20,9 @@ export function DarkModeProvider({ children }: { children: ReactNode }) {
       setDarkMode(true);
     } else if (saved === 'light') {
       setDarkMode(false);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setDarkMode(true);
+    } else {
+      // No saved preference: default to light mode so the site starts white on all devices
+      setDarkMode(false);
     }
   }, []);
 

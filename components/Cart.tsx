@@ -53,12 +53,12 @@ export default function Cart() {
     // Usamos el número que indicaste: 5645689216 -> con prefijo +52 queda 525645689216
     const adminNumber = '525645689216';
 
-    let mensaje = `Pedido desde: ${buyerPhone}%0A`;
-    mensaje += `%0AProductos:%0A`;
+    let mensaje = `Pedido desde: ${buyerPhone}`;
+    mensaje += ` Productos: `;
     carrito.forEach(p => {
-      mensaje += `• ${p.nombre} - $${p.precio}%0A`;
+      mensaje += `• ${p.nombre} - $${p.precio} `;
     });
-    mensaje += `%0ATotal: $${total}`;
+    mensaje += `Total: $${total}`;
 
     const url = `https://wa.me/${adminNumber}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
