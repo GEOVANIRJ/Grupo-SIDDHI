@@ -1,0 +1,13 @@
+__turbopack_load_page_chunks__("/_app", [
+  "static/chunks/ff8e0_next_dist_compiled_7ada7fd0._.js",
+  "static/chunks/ff8e0_next_dist_shared_lib_67859fa7._.js",
+  "static/chunks/ff8e0_next_dist_client_702d9d3f._.js",
+  "static/chunks/ff8e0_next_dist_7667bc26._.js",
+  "static/chunks/ff8e0_next_app_c7c87c18.js",
+  "static/chunks/[next]_entry_page-loader_ts_63fee494._.js",
+  "static/chunks/ff8e0_react-dom_e82dbf5b._.js",
+  "static/chunks/ff8e0_25a5653e._.js",
+  "static/chunks/[root-of-the-server]__972c4445._.js",
+  "static/chunks/OneDrive_Escritorio_CHINESE_grupo-siddhi-next_pages__app_2da965e7._.js",
+  "static/chunks/turbopack-OneDrive_Escritorio_CHINESE_grupo-siddhi-next_pages__app_03cbe848._.js"
+])

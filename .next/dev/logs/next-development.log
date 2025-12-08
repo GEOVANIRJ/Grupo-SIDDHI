@@ -1,0 +1,501 @@
+[00:00:05.411] Server  LOG      ✓ Ready in 4s
+[00:00:12.758] Server  LOG      ○ Compiling / ...
+[00:00:15.856] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx:14:25
+Ecmascript file had an error
+  12 | ];
+  13 |
+> 14 | export default function Home() {
+     |                         ^^^^
+  15 |   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  16 |   const [isScrolled, setIsScrolled] = useState(false);
+  17 |
+
+the name `Home` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+
+[00:00:19.347] Browser ERROR   uncaughtError: Error: ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx:14:25
+Ecmascript file had an error
+  12 | ];
+  13 |
+> 14 | export default function Home() {
+     |                         ^^^^
+  15 |   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  16 |   const [isScrolled, setIsScrolled] = useState(false);
+  17 |
+
+the name `Home` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+
+[00:00:19.738] Browser ERROR   ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx:14:25
+Ecmascript file had an error
+  12 | ];
+  13 |
+> 14 | export default function Home() {
+     |                         ^^^^
+  15 |   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  16 |   const [isScrolled, setIsScrolled] = useState(false);
+  17 |
+
+the name `Home` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+[00:00:19.738] Browser ERROR   ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx:14:25
+Ecmascript file had an error
+  12 | ];
+  13 |
+> 14 | export default function Home() {
+     |                         ^^^^
+  15 |   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  16 |   const [isScrolled, setIsScrolled] = useState(false);
+  17 |
+
+the name `Home` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+[00:00:29.208] Browser ERROR   ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx:14:25
+Ecmascript file had an error
+  12 | ];
+  13 |
+> 14 | export default function Home() {
+     |                         ^^^^
+  15 |   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  16 |   const [isScrolled, setIsScrolled] = useState(false);
+  17 |
+
+the name `Home` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+[00:00:29.535] Browser ERROR   ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx:14:25
+Ecmascript file had an error
+  12 | ];
+  13 |
+> 14 | export default function Home() {
+     |                         ^^^^
+  15 |   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  16 |   const [isScrolled, setIsScrolled] = useState(false);
+  17 |
+
+the name `Home` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+[00:00:29.891] Browser ERROR   ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx:14:25
+Ecmascript file had an error
+  12 | ];
+  13 |
+> 14 | export default function Home() {
+     |                         ^^^^
+  15 |   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  16 |   const [isScrolled, setIsScrolled] = useState(false);
+  17 |
+
+the name `Home` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+[00:00:30.313] Browser ERROR   ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx:14:25
+Ecmascript file had an error
+  12 | ];
+  13 |
+> 14 | export default function Home() {
+     |                         ^^^^
+  15 |   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  16 |   const [isScrolled, setIsScrolled] = useState(false);
+  17 |
+
+the name `Home` is defined multiple times
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/page.tsx [Server Component]
+[00:00:42.777] Server  LOG      ✓ Compiled in 184ms
+[00:00:45.338] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:00.380] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:06.816] Server  LOG      ✓ Compiled in 996ms
+[00:02:11.079] Server  LOG      ✓ Compiled in 351ms
+[00:02:14.627] Server  LOG      ✓ Compiled in 354ms
+[00:02:36.150] Server  LOG      ✓ Compiled in 1352ms
+[00:03:07.601] Server  LOG      ○ Compiling /catalogo ...
+[00:07:45.356] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.413] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.768] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.809] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.861] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.873] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.877] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.897] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.935] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.961] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:45.980] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:46.006] Server  ERROR    ⨯ ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:07:46.058] Server  LOG      ✓ Compiled in 4.7s
+[00:07:46.789] Browser ERROR   ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx:6:1
+Module not found: Can't resolve '@/components/Cart'
+  4 | import { useState } from 'react';
+  5 | import { ShoppingCart } from 'lucide-react';
+> 6 | import Cart from '@/components/Cart';
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  7 |
+  8 | interface Producto {
+  9 |   id: number;
+
+Import map: aliased to relative './components/Cart' inside of [project]/OneDrive/Escritorio/CHINESE/grupo-siddhi-next
+
+Import traces:
+  Client Component Browser:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component Browser]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Client Component SSR]
+    ./OneDrive/Escritorio/CHINESE/grupo-siddhi-next/app/catalogo/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+[00:08:09.497] Server  LOG      ✓ Compiled in 1463ms
+[00:08:42.812] Server  LOG      ✓ Compiled in 878ms
+[00:12:02.053] Server  LOG      ✓ Compiled in 723ms
+[00:13:59.846] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
