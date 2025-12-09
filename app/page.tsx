@@ -4,8 +4,33 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Header';
 
-export default function HomePage() {
+export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const images = [
+    "/img/fondo-home.png",
+    "/img/fondo-home2.png",
+    "/img/fondo-home3.png",
+    "/img/fondo-home4.png"
+  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,10 +139,12 @@ export default function HomePage() {
       >
         {/* Fondo con animación Ken Burns (usa imagen en public/) */}
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <div
-            className="absolute inset-0 bg-center bg-cover bg-kenburns z-0"
-            style={{ backgroundImage: 'url("/fondo-home2.png")' }}
-          />
+          
+      <div
+        className="absolute inset-0 bg-center bg-cover bg-kenburns z-0 transition-all duration-1000 ease-in-out"
+        style={{ backgroundImage: `url(${images[currentIndex]})` }}
+      />
+
           {/* overlay para mejorar contraste del texto (light/dark) */}
           <div className="absolute inset-0 z-10 bg-white/30" />
 
@@ -144,3 +171,4 @@ export default function HomePage() {
     </div>
   );
 }
+

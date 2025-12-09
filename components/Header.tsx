@@ -66,7 +66,7 @@ export default function Header() {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-[#2959c7] to-[#fe3158] rounded-full blur-md opacity-50"></div>
             <img 
-              src="/logo.jpg" 
+              src="logo/logo.jpg" 
               alt="SIDDHI" 
               className="relative w-10 h-10 md:w-12 md:h-12 object-contain rounded-full ring-2 ring-white shadow-lg" 
             />
