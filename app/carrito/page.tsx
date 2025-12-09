@@ -1,5 +1,6 @@
 'use client';
 
+import Header from '@/components/Header';
 import { useState, useEffect } from 'react';
 import { Trash2, ShoppingBag, ArrowLeft } from 'lucide-react';
 
@@ -120,6 +121,7 @@ export default function CarritoPage() {
 
   return (
     <div className="min-h-screen bg-white pt-24 pb-12">
+      <Header />
       {/* Header Section */}
       <div className="bg-gradient-to-r from-[#2959c7] via-[#1e47a1] to-[#fe3158] text-white py-12">
         <div className="container mx-auto px-4">
