@@ -196,7 +196,7 @@ export default function Catalogo() {
       return;
     }
 
-    if (IMGBB_API_KEY === 'fbadb457fc27dfb1ce4386a1c6dcda46') {
+    if (IMGBB_API_KEY === 'TU_API_KEY_AQUI') {
       alert('⚠️ Debes configurar tu API Key de ImgBB en el código');
       return;
     }
