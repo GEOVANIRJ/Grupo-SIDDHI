@@ -2,7 +2,7 @@
 
 import Header from '@/components/Header';
 import { useState, useEffect } from 'react';
-import { ShoppingCart, Package, Tag, Sparkles, TrendingUp, Lock, X, Edit2, Save, Upload, LogOut, Loader2, Trash2 } from 'lucide-react';
+import { ShoppingCart, Package, Tag, Sparkles, TrendingUp, Lock, X, Edit2, Save, Upload, LogOut, Loader2, Trash2, Plus } from 'lucide-react';
 
 
 interface Producto {
@@ -33,10 +33,7 @@ const CATEGORIA_INFO = {
   personalizados: { icon: TrendingUp, color: 'from-[#ff2e55] to-[#2959c7]' },
 };
 
-// ⚠️ CAMBIA ESTE PIN POR EL TUYO
 const PIN_ADMIN = "superadmin123";
-
-// ⚠️ CAMBIA ESTA API KEY POR LA TUYA DE IMGBB
 const IMGBB_API_KEY = "fbadb457fc27dfb1ce4386a1c6dcda46";
 
 export default function Catalogo() {
@@ -51,10 +48,18 @@ export default function Catalogo() {
   const [pinError, setPinError] = useState('');
   const [uploadingImage, setUploadingImage] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<number | null>(null);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [nuevoProducto, setNuevoProducto] = useState<Partial<Producto>>({
+    nombre: '',
+    precio: 0,
+    categoria: 'letras',
+    imagen: 'https://via.placeholder.com/300x200?text=Nuevo+Producto',
+    destacado: false,
+    nuevo: false
+  });
 
   const categorias = ['todos', ...new Set(productos.map(p => p.categoria))];
 
-  // Cargar productos al inicio
   useEffect(() => {
     cargarProductos();
   }, []);
@@ -105,7 +110,7 @@ export default function Catalogo() {
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('❌ Error al subir la imagen. Verifica tu API Key de ImgBB');
+      alert('❌ Error al subir la imagen');
       setUploadingImage(false);
       return null;
     }
@@ -130,7 +135,10 @@ export default function Catalogo() {
     ? productos 
     : productos.filter(p => p.categoria === filtro);
 
-  const agregarCarrito = (id: number) => {
+
+
+
+const agregarCarrito = (id: number) => {
   const producto = productos.find(p => p.id === id);
   if (producto) {
     const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
@@ -139,11 +147,9 @@ export default function Catalogo() {
 
     if (itemExistente) {
       itemExistente.cantidad = (itemExistente.cantidad || 1) + 1;
-      const newQuantity = itemExistente.cantidad;
-
       window.dispatchEvent(
         new CustomEvent("cartAction", {
-          detail: { message: `Cantidad actualizada a ${newQuantity}` }
+          detail: { message: `Cantidad actualizada a ${itemExistente.cantidad}` }
         })
       );
     } else {
@@ -163,19 +169,17 @@ export default function Catalogo() {
 
     localStorage.setItem("carrito", JSON.stringify(carrito));
     window.dispatchEvent(new Event("cartUpdated"));
-
-    const button = document.getElementById(`btn-${id}`);
-    if (button) {
-      button.textContent = "¡Agregado!";
-      setTimeout(() => {
-        button.innerHTML =
-          `<svg class="inline" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-             <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
-           </svg> Agregar`;
-      }, 1000);
-    }
+    
+    // Mensaje visual simple
+    alert(`✅ ${producto.nombre} agregado al carrito`);
   }
 };
+
+
+
+
+
+
 
   const iniciarEdicion = (producto: Producto) => {
     setEditingId(producto.id);
@@ -187,7 +191,7 @@ export default function Catalogo() {
     setEditData({});
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, esNuevoProducto: boolean = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -199,9 +203,17 @@ export default function Catalogo() {
     const imageUrl = await subirImagenAImgBB(file);
     
     if (imageUrl) {
-      setEditData({ ...editData, imagen: imageUrl });
+      if (esNuevoProducto) {
+        setNuevoProducto({ ...nuevoProducto, imagen: imageUrl });
+      } else {
+        setEditData({ ...editData, imagen: imageUrl });
+      }
       alert('✅ Imagen subida correctamente');
     }
+  };
+
+  const borrarImagen = () => {
+    setEditData({ ...editData, imagen: 'https://via.placeholder.com/300x200?text=Sin+Imagen' });
   };
 
   const guardarEdicion = () => {
@@ -221,6 +233,37 @@ export default function Catalogo() {
     setShowDeleteConfirm(null);
   };
 
+  const agregarNuevoProducto = () => {
+    if (!nuevoProducto.nombre || nuevoProducto.precio === 0) {
+      alert('⚠️ Por favor completa el nombre y el precio');
+      return;
+    }
+
+    const maxId = productos.length > 0 ? Math.max(...productos.map(p => p.id)) : 0;
+    const productoCompleto: Producto = {
+      id: maxId + 1,
+      nombre: nuevoProducto.nombre || '',
+      precio: nuevoProducto.precio || 0,
+      categoria: nuevoProducto.categoria || 'letras',
+      imagen: nuevoProducto.imagen || 'https://via.placeholder.com/300x200?text=Nuevo+Producto',
+      destacado: nuevoProducto.destacado || false,
+      nuevo: nuevoProducto.nuevo || false
+    };
+
+    const nuevosProductos = [...productos, productoCompleto];
+    guardarProductos(nuevosProductos);
+    
+    setShowAddModal(false);
+    setNuevoProducto({
+      nombre: '',
+      precio: 0,
+      categoria: 'letras',
+      imagen: 'https://via.placeholder.com/300x200?text=Nuevo+Producto',
+      destacado: false,
+      nuevo: false
+    });
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center">
@@ -234,10 +277,8 @@ export default function Catalogo() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-black">
-      {/* Header - Descomenta la siguiente línea cuando importes tu Header */}
-      /<Header />
+      <Header />
       
-      {/* Botón flotante de admin */}
       {!isAdmin && (
         <button
           onClick={() => setShowPinModal(true)}
@@ -248,21 +289,29 @@ export default function Catalogo() {
         </button>
       )}
 
-      {/* Indicador de modo admin */}
       {isAdmin && (
-        <div className="fixed top-6 right-6 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 z-50">
-          <Edit2 size={18} />
-          <span className="font-bold">Modo Admin</span>
+        <>
+          <div className="fixed top-24 right-6 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg flex items-center gap-2 z-50">
+            <Edit2 size={18} />
+            <span className="font-bold">Modo Admin</span>
+            <button
+              onClick={() => setIsAdmin(false)}
+              className="ml-2 hover:bg-white/20 p-1 rounded-full transition"
+            >
+              <LogOut size={18} />
+            </button>
+          </div>
+          
           <button
-            onClick={() => setIsAdmin(false)}
-            className="ml-2 hover:bg-white/20 p-1 rounded-full transition"
+            onClick={() => setShowAddModal(true)}
+            className="fixed bottom-6 right-24 bg-gradient-to-r from-[#ff2e55] to-[#fe3158] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-50"
+            title="Agregar Producto"
           >
-            <LogOut size={18} />
+            <Plus size={24} />
           </button>
-        </div>
+        </>
       )}
 
-      {/* Modal PIN */}
       {showPinModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
@@ -309,8 +358,84 @@ export default function Catalogo() {
         </div>
       )}
 
-      <div className="pt-8">
-        {/* Hero Section */}
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl my-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Agregar Producto</h2>
+              <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-600">
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="relative">
+                <img src={nuevoProducto.imagen} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
+                <label className="absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/60 rounded-lg transition">
+                  {uploadingImage ? (
+                    <div className="bg-white text-gray-800 px-4 py-2 rounded-lg flex items-center gap-2">
+                      <Loader2 size={20} className="animate-spin" />
+                      <span>Subiendo...</span>
+                    </div>
+                  ) : (
+                    <div className="bg-white text-gray-800 px-4 py-2 rounded-lg flex items-center gap-2">
+                      <Upload size={20} />
+                      <span>Subir Imagen</span>
+                    </div>
+                  )}
+                  <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, true)} className="hidden" disabled={uploadingImage} />
+                </label>
+              </div>
+
+              <input
+                type="text"
+                value={nuevoProducto.nombre}
+                onChange={(e) => setNuevoProducto({ ...nuevoProducto, nombre: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#2959c7] focus:outline-none"
+                placeholder="Nombre del producto"
+              />
+
+              <input
+                type="number"
+                value={nuevoProducto.precio}
+                onChange={(e) => setNuevoProducto({ ...nuevoProducto, precio: Number(e.target.value) })}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#2959c7] focus:outline-none text-2xl font-bold"
+                placeholder="Precio"
+              />
+
+              <select
+                value={nuevoProducto.categoria}
+                onChange={(e) => setNuevoProducto({ ...nuevoProducto, categoria: e.target.value })}
+                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#2959c7] focus:outline-none"
+              >
+                <option value="letras">Letras</option>
+                <option value="decoracion">Decoración</option>
+                <option value="regalos">Regalos</option>
+                <option value="personalizados">Personalizados</option>
+              </select>
+
+              <div className="flex gap-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" checked={nuevoProducto.nuevo || false} onChange={(e) => setNuevoProducto({ ...nuevoProducto, nuevo: e.target.checked })} className="w-5 h-5" />
+                  <span className="font-semibold">Nuevo</span>
+                </label>
+                
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input type="checkbox" checked={nuevoProducto.destacado || false} onChange={(e) => setNuevoProducto({ ...nuevoProducto, destacado: e.target.checked })} className="w-5 h-5" />
+                  <span className="font-semibold">Destacado</span>
+                </label>
+              </div>
+
+              <button onClick={agregarNuevoProducto} className="w-full bg-gradient-to-r from-[#2959c7] to-[#1e47a1] text-white py-3 rounded-xl font-bold hover:opacity-90 transition flex items-center justify-center gap-2">
+                <Plus size={20} />
+                Agregar Producto
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="pt-32">
         <div className="relative py-20 text-center text-white overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[#ff2e55] via-[#fe3158] to-[#2959c7]"></div>
           <div className="absolute inset-0 opacity-10">
@@ -326,7 +451,6 @@ export default function Catalogo() {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-12">
-          {/* Stats Section */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
               <p className="text-3xl font-bold bg-gradient-to-r from-[#2959c7] to-[#ff2e55] bg-clip-text text-transparent">{productos.length}</p>
@@ -346,7 +470,6 @@ export default function Catalogo() {
             </div>
           </div>
 
-          {/* Filtros */}
           <div className="mb-12">
             <div className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-[#ff2e55]/10 to-[#2959c7]/10 rounded-full">
               <span className="text-sm font-semibold bg-gradient-to-r from-[#ff2e55] to-[#2959c7] bg-clip-text text-transparent">
@@ -377,7 +500,6 @@ export default function Catalogo() {
             </div>
           </div>
 
-          {/* Grid de productos */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {productosFiltrados.map(producto => {
               const enEdicion = editingId === producto.id;
@@ -397,31 +519,38 @@ export default function Catalogo() {
                       className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     
-                    {/* Admin: Editar imagen */}
                     {isAdmin && enEdicion && (
-                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center gap-2">
                         {uploadingImage ? (
                           <div className="bg-white text-gray-800 px-4 py-2 rounded-lg flex items-center gap-2">
                             <Loader2 size={20} className="animate-spin" />
                             <span>Subiendo...</span>
                           </div>
                         ) : (
-                          <label className="cursor-pointer bg-white text-gray-800 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-100 transition">
-                            <Upload size={20} />
-                            <span>Cambiar Imagen</span>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={handleImageUpload}
-                              className="hidden"
-                              disabled={uploadingImage}
-                            />
-                          </label>
+                          <>
+                            <label className="cursor-pointer bg-white text-gray-800 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-gray-100 transition">
+                              <Upload size={18} />
+                              <span>Cambiar</span>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => handleImageUpload(e, false)}
+                                className="hidden"
+                                disabled={uploadingImage}
+                              />
+                            </label>
+                            <button
+                              onClick={borrarImagen}
+                              className="bg-red-500 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-red-600 transition"
+                            >
+                              <Trash2 size={18} />
+                              <span>Borrar</span>
+                            </button>
+                          </>
                         )}
                       </div>
                     )}
                     
-                    {/* Badges */}
                     <div className="absolute top-3 right-3 flex flex-col gap-2">
                       {datos.nuevo && (
                         <span className="bg-gradient-to-r from-[#ff2e55] to-[#fe3158] text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
@@ -438,7 +567,6 @@ export default function Catalogo() {
                   
                   <div className="p-5">
                     {enEdicion ? (
-                      // Modo edición
                       <div className="space-y-3">
                         <input
                           type="text"
@@ -498,123 +626,120 @@ export default function Catalogo() {
                             Guardar
                           </button>
                           <button
-                            onClick={cancelarEdicion}
-                            className="flex-1 bg-gray-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-600 transition"
-                          >
-                            <X size={18} />
-                            Cancelar
-                          </button>
-                        </div>
+                        onClick={cancelarEdicion}
+                        className="flex-1 bg-gray-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-600 transition"
+                      >
+                        <X size={18} />
+                        Cancelar
+                      </button>
+                    </div>
 
-                        <button
-                          onClick={() => setShowDeleteConfirm(producto.id)}
-                          className="w-full bg-red-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-red-600 transition"
-                        >
-                          <Trash2 size={18} />
-                          Eliminar Producto
-                        </button>
-                      </div>
-                    ) : (
-                      // Modo normal
-                      <>
-                        <div className="mb-3">
-                          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                            {producto.categoria}
-                          </span>
-                        </div>
-                        <h3 className="text-lg font-bold mb-3 group-hover:text-[#ff2e55] transition-colors">
-                          {producto.nombre}
-                        </h3>
-                        <div className="flex items-center justify-between mb-4">
-                          <p className="text-gray-600 text-3xl font-bold">
-                            ${producto.precio}
-                          </p>
-                          <span className="text-xs text-gray-500">MXN</span>
-                        </div>
-                        
-                        {isAdmin ? (
-                          <button
-                            onClick={() => iniciarEdicion(producto)}
-                            className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105"
-                          >
-                            <Edit2 size={20} />
-                            Editar
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => agregarCarrito(producto.id)}
-                            className="w-full bg-gradient-to-r from-[#ff2e55] to-[#fe3158] hover:from-[#fe3158] hover:to-[#ff2e55] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105"
-                          >
-                            <ShoppingCart size={20} />
-                            Agregar
-                          </button>
-                        )}
-                      </>
-                    )}
+                    <button
+                      onClick={() => setShowDeleteConfirm(producto.id)}
+                      className="w-full bg-red-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-red-600 transition"
+                    >
+                      <Trash2 size={18} />
+                      Eliminar Producto
+                    </button>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Empty State */}
-          {productosFiltrados.length === 0 && (
-            <div className="text-center py-20">
-              <Package size={64} className="mx-auto text-gray-300 mb-4" />
-              <h3 className="text-2xl font-bold mb-2">No hay productos</h3>
-              <p className="text-gray-600">
-                No se encontraron productos en esta categoría
-              </p>
+                ) : (
+                  <>
+                    <div className="mb-3">
+                      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                        {producto.categoria}
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-bold mb-3 group-hover:text-[#ff2e55] transition-colors">
+                      {producto.nombre}
+                    </h3>
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-gray-600 text-3xl font-bold">
+                        ${producto.precio}
+                      </p>
+                      <span className="text-xs text-gray-500">MXN</span>
+                    </div>
+                    
+                    {isAdmin ? (
+                      <button
+                        onClick={() => iniciarEdicion(producto)}
+                        className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105"
+                      >
+                        <Edit2 size={20} />
+                        Editar
+                      </button>
+                    ) : (
+                      <button
+                        id={`btn-${producto.id}`}
+                        onClick={() => agregarCarrito(producto.id)}
+                        className="w-full bg-gradient-to-r from-[#ff2e55] to-[#fe3158] hover:from-[#fe3158] hover:to-[#ff2e55] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105"
+                      >
+                        <ShoppingCart size={20} />
+                        Agregar
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
-          )}
-
-          {/* CTA Section */}
-          <div className="mt-20 text-center bg-gradient-to-br from-[#2959c7] to-[#ff2e55] rounded-3xl p-12 md:p-16 text-white relative overflow-hidden">
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-            </div>
-            <div className="relative z-10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">¿No encuentras lo que buscas?</h2>
-              <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Creamos productos personalizados según tus necesidades. ¡Contáctanos!
-              </p>
-              <button className="inline-block bg-white text-[#2959c7] px-8 py-4 rounded-xl font-bold text-lg hover:transform hover:scale-105 transition-all duration-300 shadow-xl">
-                Contactar
-              </button>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
 
-      {/* Modal de confirmación para eliminar */}
-      {showDeleteConfirm !== null && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
-            <div className="text-center mb-6">
-              <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                <Trash2 size={32} className="text-red-500" />
-              </div>
-              <h2 className="text-2xl font-bold mb-2">¿Eliminar producto?</h2>
-              <p className="text-gray-600">Esta acción no se puede deshacer</p>
-            </div>
-            
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowDeleteConfirm(null)}
-                className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={() => eliminarProducto(showDeleteConfirm)}
-                className="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition"
-              >
-                Eliminar
-              </button>
-            </div>
-          </div>
+      {productosFiltrados.length === 0 && (
+        <div className="text-center py-20">
+          <Package size={64} className="mx-auto text-gray-300 mb-4" />
+          <h3 className="text-2xl font-bold mb-2">No hay productos</h3>
+          <p className="text-gray-600">
+            No se encontraron productos en esta categoría
+          </p>
         </div>
       )}
+
+      <div className="mt-20 text-center bg-gradient-to-br from-[#2959c7] to-[#ff2e55] rounded-3xl p-12 md:p-16 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
+        <div className="relative z-10">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">¿No encuentras lo que buscas?</h2>
+          <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+            Creamos productos personalizados según tus necesidades. ¡Contáctanos!
+          </p>
+          <button className="inline-block bg-white text-[#2959c7] px-8 py-4 rounded-xl font-bold text-lg hover:transform hover:scale-105 transition-all duration-300 shadow-xl">
+            Contactar
+          </button>
+        </div>
+      </div>
     </div>
-  );
+  </div>
+
+  {showDeleteConfirm !== null && (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+        <div className="text-center mb-6">
+          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+            <Trash2 size={32} className="text-red-500" />
+          </div>
+          <h2 className="text-2xl font-bold mb-2">¿Eliminar producto?</h2>
+          <p className="text-gray-600">Esta acción no se puede deshacer</p>
+        </div>
+        
+        <div className="flex gap-3">
+          <button
+            onClick={() => setShowDeleteConfirm(null)}
+            className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={() => eliminarProducto(showDeleteConfirm)}
+            className="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition"
+          >
+            Eliminar
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+);
 }
