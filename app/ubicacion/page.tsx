@@ -23,11 +23,10 @@ export default function Ubicacion() {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      darkMode 
-        ? 'bg-gradient-to-b from-gray-900 to-gray-800 text-white' 
-        : 'bg-gradient-to-b from-white to-gray-50 text-black'
-    }`}>
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode
+      ? 'bg-gradient-to-b from-gray-900 to-gray-800 text-white'
+      : 'bg-gradient-to-b from-white to-gray-50 text-black'
+      }`}>
       <Header />
       <div className="pt-32">
         {/* Hero Section */}
@@ -63,18 +62,16 @@ export default function Ubicacion() {
               </div>
 
               {/* Teléfono */}
-              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#ff2e55] ${
-                darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-              }`}>
+              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#ff2e55] ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                }`}>
                 <div className="flex gap-4 items-start">
                   <div className="p-3 bg-gradient-to-br from-[#ff2e55] to-[#fe3158] rounded-xl group-hover:scale-110 transition-transform duration-300">
                     <Phone className="text-white" size={24} />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-2">Teléfono</h3>
-                    <a href="tel:+5512345678" className={`transition-colors ${
-                      darkMode ? 'text-gray-300 hover:text-[#ff2e55]' : 'text-gray-600 hover:text-[#2959c7]'
-                    }`}>
+                    <a href="tel:+5512345678" className={`transition-colors ${darkMode ? 'text-gray-300 hover:text-[#ff2e55]' : 'text-gray-600 hover:text-[#2959c7]'
+                      }`}>
                       +55 1234 5678
                     </a>
                   </div>
@@ -82,18 +79,16 @@ export default function Ubicacion() {
               </div>
 
               {/* Email */}
-              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#2959c7] ${
-                darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-              }`}>
+              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#2959c7] ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                }`}>
                 <div className="flex gap-4 items-start">
                   <div className="p-3 bg-gradient-to-br from-[#2959c7] to-[#1e47a1] rounded-xl group-hover:scale-110 transition-transform duration-300">
                     <Mail className="text-white" size={24} />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-2">Email</h3>
-                    <a href="mailto:info@gruposiddhi.com" className={`break-all transition-colors ${
-                      darkMode ? 'text-gray-300 hover:text-[#ff2e55]' : 'text-gray-600 hover:text-[#2959c7]'
-                    }`}>
+                    <a href="mailto:info@gruposiddhi.com" className={`break-all transition-colors ${darkMode ? 'text-gray-300 hover:text-[#ff2e55]' : 'text-gray-600 hover:text-[#2959c7]'
+                      }`}>
                       info@gruposiddhi.com
                     </a>
                   </div>
@@ -101,9 +96,8 @@ export default function Ubicacion() {
               </div>
 
               {/* Horario */}
-              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#ff2e55] ${
-                darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-              }`}>
+              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#ff2e55] ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                }`}>
                 <div className="flex gap-4 items-start">
                   <div className="p-3 bg-gradient-to-br from-[#ff2e55] to-[#2959c7] rounded-xl group-hover:scale-110 transition-transform duration-300">
                     <Clock className="text-white" size={24} />
@@ -111,8 +105,7 @@ export default function Ubicacion() {
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-2">Horario de Atención</h3>
                     <div className={`space-y-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                      <p>Lunes - Viernes: <span className="font-medium">9:00 - 18:00</span></p>
-                      <p>Sábado: <span className="font-medium">9:00 - 14:00</span></p>
+                      <p>Lunes - Sabado: <span className="font-medium">9:00 - 19:00</span></p>
                       <p>Domingo: <span className="font-medium">Cerrado</span></p>
                     </div>
                   </div>
@@ -121,8 +114,8 @@ export default function Ubicacion() {
 
               {/* CTA Buttons */}
               <div className="grid grid-cols-2 gap-4 pt-6">
-                <a 
-                  href="https://wa.me/5212345678" 
+                <a
+                  href="https://wa.me/5212345678"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#25D366] to-[#128C7E] text-white px-6 py-3 rounded-xl font-bold hover:transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -130,8 +123,8 @@ export default function Ubicacion() {
                   <MessageSquare size={20} />
                   WhatsApp
                 </a>
-                <a 
-                  href="https://maps.google.com/?q=Grupo+SIDDHI" 
+                <a
+                  href="https://maps.app.goo.gl/48mZALHPpFXAie8Z9"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#ff2e55] to-[#fe3158] text-white px-6 py-3 rounded-xl font-bold hover:transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
@@ -145,11 +138,11 @@ export default function Ubicacion() {
             {/* Mapa */}
             <div className="lg:sticky lg:top-32">
               <div className="space-y-4">
-                <div className={`h-[600px] relative rounded-3xl overflow-hidden shadow-2xl border ${
-                  darkMode ? 'border-gray-700' : 'border-gray-200'
-                }`}>
+                <div className={`h-[600px] relative rounded-3xl overflow-hidden shadow-2xl border ${darkMode ? 'border-gray-700' : 'border-gray-200'
+                  }`}>
+
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.8156325151043!2d-99.1779!3d19.4326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sGrupo%20SIDDHI!5e0!3m2!1ses!2smx!4v1234567890"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1578.3936815741893!2d-99.10353880875239!3d19.794459887858277!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d18bf5d8e2a0f3%3A0x8cef90a6f6bc1bb6!2sCorte%20Laser%20Shiddi!5e0!3m2!1ses-419!2smx!4v1765447682111!5m2!1ses-419!2smx"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}
@@ -157,18 +150,20 @@ export default function Ubicacion() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                   />
+
                 </div>
-                <div className={`p-6 rounded-2xl border shadow-lg ${
-                  darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
-                }`}>
+                <div className={`p-6 rounded-2xl border shadow-lg ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                  }`}>
                   <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
                     <MapPin size={20} className="text-[#ff2e55]" />
                     Dirección
                   </h3>
                   <p className={`leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                    Calle Principal 123<br />
-                    Código Postal 28001<br />
-                    Ciudad de México, México
+                    Av. Jesus Carranza 26, San Juan<br />
+                    Código Postal 55600<br />
+                    Zumpango de Ocampo, Méx.
+
+
                   </p>
                 </div>
               </div>
