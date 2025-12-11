@@ -196,11 +196,6 @@ export default function Catalogo() {
       return;
     }
 
-    if (IMGBB_API_KEY === 'TU_API_KEY_AQUI') {
-      alert('⚠️ Debes configurar tu API Key de ImgBB en el código');
-      return;
-    }
-
     const imageUrl = await subirImagenAImgBB(file);
     
     if (imageUrl) {
