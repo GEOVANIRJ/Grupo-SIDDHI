@@ -1,11 +1,33 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Header from '@/components/Header';
 import { MapPin, Phone, Mail, Clock, Navigation, MessageSquare } from 'lucide-react';
 
 export default function Ubicacion() {
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Cargar el estado inicial del modo oscuro desde la clase del HTML
+    const isDark = document.documentElement.classList.contains('dark');
+    setDarkMode(isDark);
+
+    // Escuchar cambios en el modo oscuro
+    const handleDarkModeChange = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      setDarkMode(isDark);
+    };
+
+    window.addEventListener('darkModeChanged', handleDarkModeChange);
+    return () => window.removeEventListener('darkModeChanged', handleDarkModeChange);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-black transition-colors duration-300">
+    <div className={`min-h-screen transition-colors duration-300 ${
+      darkMode 
+        ? 'bg-gradient-to-b from-gray-900 to-gray-800 text-white' 
+        : 'bg-gradient-to-b from-white to-gray-50 text-black'
+    }`}>
       <Header />
       <div className="pt-32">
         {/* Hero Section */}
@@ -35,20 +57,24 @@ export default function Ubicacion() {
                   </span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold">Estamos aquí para ti</h2>
-                <p className="text-gray-600 mt-4">
+                <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                   Contáctanos por cualquiera de estos medios. Estamos listos para ayudarte con tu proyecto.
                 </p>
               </div>
 
               {/* Teléfono */}
-              <div className="group bg-white p-6 rounded-2xl border border-gray-200 hover:shadow-xl transition-all duration-300 hover:border-[#ff2e55]">
+              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#ff2e55] ${
+                darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              }`}>
                 <div className="flex gap-4 items-start">
                   <div className="p-3 bg-gradient-to-br from-[#ff2e55] to-[#fe3158] rounded-xl group-hover:scale-110 transition-transform duration-300">
                     <Phone className="text-white" size={24} />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-2">Teléfono</h3>
-                    <a href="tel:+5512345678" className="text-gray-600 hover:text-[#2959c7] transition-colors">
+                    <a href="tel:+5512345678" className={`transition-colors ${
+                      darkMode ? 'text-gray-300 hover:text-[#ff2e55]' : 'text-gray-600 hover:text-[#2959c7]'
+                    }`}>
                       +55 1234 5678
                     </a>
                   </div>
@@ -56,14 +82,18 @@ export default function Ubicacion() {
               </div>
 
               {/* Email */}
-              <div className="group bg-white p-6 rounded-2xl border border-gray-200 hover:shadow-xl transition-all duration-300 hover:border-[#2959c7]">
+              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#2959c7] ${
+                darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              }`}>
                 <div className="flex gap-4 items-start">
                   <div className="p-3 bg-gradient-to-br from-[#2959c7] to-[#1e47a1] rounded-xl group-hover:scale-110 transition-transform duration-300">
                     <Mail className="text-white" size={24} />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-2">Email</h3>
-                    <a href="mailto:info@gruposiddhi.com" className="text-gray-600 hover:text-[#2959c7] transition-colors break-all">
+                    <a href="mailto:info@gruposiddhi.com" className={`break-all transition-colors ${
+                      darkMode ? 'text-gray-300 hover:text-[#ff2e55]' : 'text-gray-600 hover:text-[#2959c7]'
+                    }`}>
                       info@gruposiddhi.com
                     </a>
                   </div>
@@ -71,14 +101,16 @@ export default function Ubicacion() {
               </div>
 
               {/* Horario */}
-              <div className="group bg-white p-6 rounded-2xl border border-gray-200 hover:shadow-xl transition-all duration-300 hover:border-[#ff2e55]">
+              <div className={`group p-6 rounded-2xl border transition-all duration-300 hover:shadow-xl hover:border-[#ff2e55] ${
+                darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              }`}>
                 <div className="flex gap-4 items-start">
                   <div className="p-3 bg-gradient-to-br from-[#ff2e55] to-[#2959c7] rounded-xl group-hover:scale-110 transition-transform duration-300">
                     <Clock className="text-white" size={24} />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-bold mb-2">Horario de Atención</h3>
-                    <div className="space-y-2 text-gray-600">
+                    <div className={`space-y-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                       <p>Lunes - Viernes: <span className="font-medium">9:00 - 18:00</span></p>
                       <p>Sábado: <span className="font-medium">9:00 - 14:00</span></p>
                       <p>Domingo: <span className="font-medium">Cerrado</span></p>
@@ -113,7 +145,9 @@ export default function Ubicacion() {
             {/* Mapa */}
             <div className="lg:sticky lg:top-32">
               <div className="space-y-4">
-                <div className="h-[600px] relative rounded-3xl overflow-hidden shadow-2xl border border-gray-200">
+                <div className={`h-[600px] relative rounded-3xl overflow-hidden shadow-2xl border ${
+                  darkMode ? 'border-gray-700' : 'border-gray-200'
+                }`}>
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.8156325151043!2d-99.1779!3d19.4326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sGrupo%20SIDDHI!5e0!3m2!1ses!2smx!4v1234567890"
                     width="100%"
@@ -124,12 +158,14 @@ export default function Ubicacion() {
                     referrerPolicy="no-referrer-when-downgrade"
                   />
                 </div>
-                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-lg">
+                <div className={`p-6 rounded-2xl border shadow-lg ${
+                  darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+                }`}>
                   <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
                     <MapPin size={20} className="text-[#ff2e55]" />
                     Dirección
                   </h3>
-                  <p className="text-gray-600 leading-relaxed">
+                  <p className={`leading-relaxed ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                     Calle Principal 123<br />
                     Código Postal 28001<br />
                     Ciudad de México, México

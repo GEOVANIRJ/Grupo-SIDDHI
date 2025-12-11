@@ -16,12 +16,28 @@ export default function CarritoPage() {
   const [loading, setLoading] = useState(true);
   const [buyerPhone, setBuyerPhone] = useState('');
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     // Cargar carrito desde localStorage
     const carritoGuardado = JSON.parse(localStorage.getItem('carrito') || '[]');
     setCarrito(carritoGuardado);
     setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    // Cargar el estado inicial del modo oscuro desde la clase del HTML
+    const isDark = document.documentElement.classList.contains('dark');
+    setDarkMode(isDark);
+
+    // Escuchar cambios en el modo oscuro
+    const handleDarkModeChange = () => {
+      const isDark = document.documentElement.classList.contains('dark');
+      setDarkMode(isDark);
+    };
+
+    window.addEventListener('darkModeChanged', handleDarkModeChange);
+    return () => window.removeEventListener('darkModeChanged', handleDarkModeChange);
   }, []);
 
   const calcularTotal = () => {
@@ -108,11 +124,13 @@ export default function CarritoPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white pt-24 pb-12">
+      <div className={`min-h-screen pt-24 pb-12 transition-colors duration-300 ${
+        darkMode ? 'bg-gray-900' : 'bg-white'
+      }`}>
         <div className="container mx-auto px-4">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gradient-to-r from-[#2959c7] to-[#fe3158] mx-auto"></div>
-            <p className="mt-4 text-gray-600">Cargando carrito...</p>
+            <p className={`mt-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Cargando carrito...</p>
           </div>
         </div>
       </div>
@@ -120,7 +138,9 @@ export default function CarritoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white pt-24 pb-12">
+    <div className={`min-h-screen pt-24 pb-12 transition-colors duration-300 ${
+      darkMode ? 'bg-gray-900' : 'bg-white'
+    }`}>
       <Header />
       {/* Header Section */}
       <div className="bg-gradient-to-r from-[#2959c7] via-[#1e47a1] to-[#fe3158] text-white py-12">
@@ -145,9 +165,13 @@ export default function CarritoPage() {
       <div className="container mx-auto px-4 py-12">
         {carrito.length === 0 ? (
           <div className="text-center py-16">
-            <ShoppingBag size={64} className="mx-auto text-gray-300 mb-4" />
-            <h2 className="text-2xl font-bold text-gray-700 mb-2">Tu carrito está vacío</h2>
-            <p className="text-gray-600 mb-8">Agrega productos de nuestro catálogo para empezar</p>
+            <ShoppingBag size={64} className={`mx-auto mb-4 ${darkMode ? 'text-gray-600' : 'text-gray-300'}`} />
+            <h2 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-gray-200' : 'text-gray-700'}`}>
+              Tu carrito está vacío
+            </h2>
+            <p className={`mb-8 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Agrega productos de nuestro catálogo para empezar
+            </p>
             <a
               href="/catalogo"
               className="inline-block bg-gradient-to-r from-[#2959c7] to-[#fe3158] text-white px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition-shadow duration-300"
@@ -161,10 +185,14 @@ export default function CarritoPage() {
             <div className="lg:col-span-2">
               <div className="space-y-4">
                 {carrito.map((item) => (
-                  <div key={item.id} className="bg-gray-50 rounded-lg p-4 md:p-6 border border-gray-200 hover:shadow-md transition-shadow">
+                  <div key={item.id} className={`rounded-lg p-4 md:p-6 border hover:shadow-md transition-shadow ${
+                    darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'
+                  }`}>
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex-1">
-                        <h3 className="text-lg font-bold text-gray-800">{item.nombre}</h3>
+                        <h3 className={`text-lg font-bold ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                          {item.nombre}
+                        </h3>
                         <p className="text-2xl font-bold bg-gradient-to-r from-[#2959c7] to-[#fe3158] bg-clip-text text-transparent">
                           ${item.precio.toLocaleString('es-AR')}
                         </p>
@@ -180,23 +208,35 @@ export default function CarritoPage() {
 
                     {/* Quantity Controls */}
                     <div className="flex items-center gap-4">
-                      <span className="text-sm font-medium text-gray-600">Cantidad:</span>
-                      <div className="flex items-center border border-gray-300 rounded-lg">
+                      <span className={`text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        Cantidad:
+                      </span>
+                      <div className={`flex items-center border rounded-lg ${
+                        darkMode ? 'border-gray-600' : 'border-gray-300'
+                      }`}>
                         <button
                           onClick={() => decrementarCantidad(item.id)}
-                          className="px-3 py-1 text-gray-600 hover:bg-gray-200 transition-colors font-semibold"
+                          className={`px-3 py-1 font-semibold transition-colors ${
+                            darkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-200'
+                          }`}
                         >
                           −
                         </button>
-                        <span className="px-4 py-1 font-bold text-gray-800 min-w-12 text-center">{item.cantidad}</span>
+                        <span className={`px-4 py-1 font-bold min-w-12 text-center ${
+                          darkMode ? 'text-gray-200' : 'text-gray-800'
+                        }`}>
+                          {item.cantidad}
+                        </span>
                         <button
                           onClick={() => incrementarCantidad(item.id)}
-                          className="px-3 py-1 text-gray-600 hover:bg-gray-200 transition-colors font-semibold"
+                          className={`px-3 py-1 font-semibold transition-colors ${
+                            darkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-200'
+                          }`}
                         >
                           +
                         </button>
                       </div>
-                      <span className="ml-auto font-bold text-gray-800">
+                      <span className={`ml-auto font-bold ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
                         Subtotal: ${(item.precio * item.cantidad).toLocaleString('es-AR')}
                       </span>
                     </div>
@@ -207,19 +247,27 @@ export default function CarritoPage() {
 
             {/* Summary Card */}
             <div className="lg:col-span-1">
-              <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg p-6 border border-gray-200 sticky top-24">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6">Resumen</h2>
+              <div className={`rounded-lg p-6 border sticky top-24 ${
+                darkMode 
+                  ? 'bg-gray-800 border-gray-700' 
+                  : 'bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200'
+              }`}>
+                <h2 className={`text-2xl font-bold mb-6 ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                  Resumen
+                </h2>
 
-                <div className="space-y-3 mb-6 pb-6 border-b border-gray-300">
-                  <div className="flex justify-between text-gray-700">
+                <div className={`space-y-3 mb-6 pb-6 border-b ${
+                  darkMode ? 'border-gray-700' : 'border-gray-300'
+                }`}>
+                  <div className={`flex justify-between ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     <span>Subtotal:</span>
                     <span>${calcularTotal().toLocaleString('es-AR')}</span>
                   </div>
-                  <div className="flex justify-between text-gray-700">
+                  <div className={`flex justify-between ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     <span>Envío:</span>
                     <span className="text-green-600 font-semibold">Gratis</span>
                   </div>
-                  <div className="flex justify-between text-gray-700">
+                  <div className={`flex justify-between ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                     <span>Impuestos:</span>
                     <span>Calculados al pagar</span>
                   </div>
@@ -227,7 +275,7 @@ export default function CarritoPage() {
 
                 <div className="mb-6">
                   <div className="flex justify-between items-center text-xl">
-                    <span className="font-bold text-gray-800">Total:</span>
+                    <span className={`font-bold ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>Total:</span>
                     <span className="text-2xl font-bold bg-gradient-to-r from-[#2959c7] to-[#fe3158] bg-clip-text text-transparent">
                       ${calcularTotal().toLocaleString('es-AR')}
                     </span>
@@ -243,13 +291,21 @@ export default function CarritoPage() {
                   </button>
                   <button
                     onClick={() => window.location.href = '/catalogo'}
-                    className="w-full bg-white border-2 border-gray-300 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-50 transition-colors duration-300"
+                    className={`w-full border-2 font-bold py-3 rounded-lg transition-colors duration-300 ${
+                      darkMode 
+                        ? 'bg-gray-700 border-gray-600 text-gray-200 hover:bg-gray-600' 
+                        : 'bg-white border-gray-300 text-gray-800 hover:bg-gray-50'
+                    }`}
                   >
                     Seguir Comprando
                   </button>
                   <button
                     onClick={vaciarCarrito}
-                    className="w-full text-red-600 border border-red-300 font-semibold py-2 rounded-lg hover:bg-red-50 transition-colors duration-300"
+                    className={`w-full border font-semibold py-2 rounded-lg transition-colors duration-300 ${
+                      darkMode
+                        ? 'text-red-400 border-red-800 hover:bg-red-900/20'
+                        : 'text-red-600 border-red-300 hover:bg-red-50'
+                    }`}
                   >
                     Vaciar Carrito
                   </button>
@@ -263,16 +319,26 @@ export default function CarritoPage() {
       {/* Modal - Solicitar número de teléfono */}
       {showPhoneModal && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-8 shadow-2xl">
-            <h2 className="text-2xl font-bold text-gray-800 mb-4">Ingresa tu Teléfono</h2>
-            <p className="text-gray-600 mb-6">Necesitamos tu número para contactarte sobre tu pedido</p>
+          <div className={`rounded-2xl max-w-md w-full p-8 shadow-2xl ${
+            darkMode ? 'bg-gray-800' : 'bg-white'
+          }`}>
+            <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+              Ingresa tu Teléfono
+            </h2>
+            <p className={`mb-6 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Necesitamos tu número para contactarte sobre tu pedido
+            </p>
             
             <input
               type="tel"
               value={buyerPhone}
               onChange={(e) => setBuyerPhone(e.target.value.replace(/\D/g, ''))}
               placeholder="Ej: 5512345678"
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg mb-6 focus:outline-none focus:border-[#2959c7] text-gray-800"
+              className={`w-full px-4 py-3 border-2 rounded-lg mb-6 focus:outline-none focus:border-[#2959c7] ${
+                darkMode 
+                  ? 'bg-gray-700 border-gray-600 text-gray-200 placeholder-gray-400' 
+                  : 'bg-white border-gray-300 text-gray-800'
+              }`}
               autoFocus
             />
             
@@ -285,7 +351,11 @@ export default function CarritoPage() {
               </button>
               <button
                 onClick={() => setShowPhoneModal(false)}
-                className="w-full bg-gray-200 text-gray-800 font-semibold py-3 rounded-lg hover:bg-gray-300 transition-colors duration-300"
+                className={`w-full font-semibold py-3 rounded-lg transition-colors duration-300 ${
+                  darkMode 
+                    ? 'bg-gray-700 text-gray-200 hover:bg-gray-600' 
+                    : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+                }`}
               >
                 Cancelar
               </button>

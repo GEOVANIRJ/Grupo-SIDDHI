@@ -4,7 +4,6 @@ import Header from '@/components/Header';
 import { useState, useEffect } from 'react';
 import { ShoppingCart, Package, Tag, Sparkles, TrendingUp, Lock, X, Edit2, Save, Upload, LogOut, Loader2, Trash2, Plus } from 'lucide-react';
 
-
 interface Producto {
   id: number;
   nombre: string;
@@ -57,12 +56,31 @@ export default function Catalogo() {
     destacado: false,
     nuevo: false
   });
+  const [darkMode, setDarkMode] = useState(false);
 
   const categorias = ['todos', ...new Set(productos.map(p => p.categoria))];
 
   useEffect(() => {
     cargarProductos();
   }, []);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      const isDark = localStorage.getItem('darkMode') === 'true';
+      setDarkMode(isDark);
+    };
+
+    checkDarkMode();
+
+    const handleDarkModeChange = () => {
+      checkDarkMode();
+    };
+
+    window.addEventListener('darkModeChanged', handleDarkModeChange);
+    return () => window.removeEventListener('darkModeChanged', handleDarkModeChange);
+  }, []);
+
+  // CONTINUACIÓN - Funciones del componente
 
   const cargarProductos = () => {
     try {
@@ -90,7 +108,7 @@ export default function Catalogo() {
 
   const subirImagenAImgBB = async (file: File): Promise<string | null> => {
     setUploadingImage(true);
-    
+
     try {
       const formData = new FormData();
       formData.append('image', file);
@@ -131,55 +149,45 @@ export default function Catalogo() {
     setFiltro(categoria);
   };
 
-  const productosFiltrados = filtro === 'todos' 
-    ? productos 
+  const productosFiltrados = filtro === 'todos'
+    ? productos
     : productos.filter(p => p.categoria === filtro);
 
+  const agregarCarrito = (id: number) => {
+    const producto = productos.find(p => p.id === id);
+    if (producto) {
+      const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
 
+      const itemExistente = carrito.find((item: any) => item.id === String(id));
 
+      if (itemExistente) {
+        itemExistente.cantidad = (itemExistente.cantidad || 1) + 1;
+        window.dispatchEvent(
+          new CustomEvent("cartAction", {
+            detail: { message: `Cantidad actualizada a ${itemExistente.cantidad}` }
+          })
+        );
+      } else {
+        carrito.push({
+          id: String(id),
+          nombre: producto.nombre,
+          precio: producto.precio,
+          cantidad: 1
+        });
 
-const agregarCarrito = (id: number) => {
-  const producto = productos.find(p => p.id === id);
-  if (producto) {
-    const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
+        window.dispatchEvent(
+          new CustomEvent("cartAction", {
+            detail: { message: `¡${producto.nombre} agregado al carrito!` }
+          })
+        );
+      }
 
-    const itemExistente = carrito.find((item: any) => item.id === String(id));
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      window.dispatchEvent(new Event("cartUpdated"));
 
-    if (itemExistente) {
-      itemExistente.cantidad = (itemExistente.cantidad || 1) + 1;
-      window.dispatchEvent(
-        new CustomEvent("cartAction", {
-          detail: { message: `Cantidad actualizada a ${itemExistente.cantidad}` }
-        })
-      );
-    } else {
-      carrito.push({
-        id: String(id),
-        nombre: producto.nombre,
-        precio: producto.precio,
-        cantidad: 1
-      });
-
-      window.dispatchEvent(
-        new CustomEvent("cartAction", {
-          detail: { message: `¡${producto.nombre} agregado al carrito!` }
-        })
-      );
+      alert(`✅ ${producto.nombre} agregado al carrito`);
     }
-
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    window.dispatchEvent(new Event("cartUpdated"));
-    
-    // Mensaje visual simple
-    alert(`✅ ${producto.nombre} agregado al carrito`);
-  }
-};
-
-
-
-
-
-
+  };
 
   const iniciarEdicion = (producto: Producto) => {
     setEditingId(producto.id);
@@ -201,7 +209,7 @@ const agregarCarrito = (id: number) => {
     }
 
     const imageUrl = await subirImagenAImgBB(file);
-    
+
     if (imageUrl) {
       if (esNuevoProducto) {
         setNuevoProducto({ ...nuevoProducto, imagen: imageUrl });
@@ -218,7 +226,7 @@ const agregarCarrito = (id: number) => {
 
   const guardarEdicion = () => {
     if (editingId !== null) {
-      const nuevosProductos = productos.map(p => 
+      const nuevosProductos = productos.map(p =>
         p.id === editingId ? { ...p, ...editData } : p
       );
       guardarProductos(nuevosProductos);
@@ -252,7 +260,7 @@ const agregarCarrito = (id: number) => {
 
     const nuevosProductos = [...productos, productoCompleto];
     guardarProductos(nuevosProductos);
-    
+
     setShowAddModal(false);
     setNuevoProducto({
       nombre: '',
@@ -264,21 +272,31 @@ const agregarCarrito = (id: number) => {
     });
   };
 
+
+
+
+
+
+
+  // CONTINUACIÓN - Return con JSX
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 flex items-center justify-center">
+      <div className={`min-h-screen flex items-center justify-center transition-colors duration-300 ${darkMode ? 'bg-gradient-to-b from-gray-900 to-gray-800' : 'bg-gradient-to-b from-white to-gray-50'
+        }`}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-[#ff2e55] mx-auto mb-4"></div>
-          <p className="text-gray-600">Cargando catálogo...</p>
+          <p className={darkMode ? 'text-gray-300' : 'text-gray-600'}>Cargando catálogo...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 text-black">
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gradient-to-b from-gray-900 to-gray-800 text-white' : 'bg-gradient-to-b from-white to-gray-50 text-black'
+      }`}>
       <Header />
-      
+
       {!isAdmin && (
         <button
           onClick={() => setShowPinModal(true)}
@@ -301,7 +319,7 @@ const agregarCarrito = (id: number) => {
               <LogOut size={18} />
             </button>
           </div>
-          
+
           <button
             onClick={() => setShowAddModal(true)}
             className="fixed bottom-6 right-24 bg-gradient-to-r from-[#ff2e55] to-[#fe3158] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform z-50"
@@ -312,9 +330,11 @@ const agregarCarrito = (id: number) => {
         </>
       )}
 
+      {/* Modal PIN */}
       {showPinModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
+          <div className={`rounded-2xl p-8 max-w-md w-full shadow-2xl transition-colors duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'
+            }`}>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">Acceso Administrador</h2>
               <button
@@ -323,12 +343,12 @@ const agregarCarrito = (id: number) => {
                   setPinInput('');
                   setPinError('');
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className={darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'}
               >
                 <X size={24} />
               </button>
             </div>
-            
+
             <div className="mb-6">
               <label className="block text-sm font-semibold mb-2">Ingresa tu PIN</label>
               <input
@@ -339,7 +359,10 @@ const agregarCarrito = (id: number) => {
                   setPinError('');
                 }}
                 onKeyPress={(e) => e.key === 'Enter' && handlePinSubmit()}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#2959c7] focus:outline-none text-lg"
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none text-lg transition-colors duration-300 ${darkMode
+                  ? 'bg-gray-700 border-gray-600 text-white focus:border-[#2959c7]'
+                  : 'bg-white border-gray-300 text-black focus:border-[#2959c7]'
+                  }`}
                 placeholder="Escribe tu PIN"
                 autoFocus
               />
@@ -358,16 +381,28 @@ const agregarCarrito = (id: number) => {
         </div>
       )}
 
+
+
+
+
+
+
+
+      {/* Modal Agregar Producto */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl my-8">
+          <div className={`rounded-2xl p-8 max-w-md w-full shadow-2xl my-8 transition-colors duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'
+            }`}>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">Agregar Producto</h2>
-              <button onClick={() => setShowAddModal(false)} className="text-gray-400 hover:text-gray-600">
+              <button
+                onClick={() => setShowAddModal(false)}
+                className={darkMode ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'}
+              >
                 <X size={24} />
               </button>
             </div>
-            
+
             <div className="space-y-4">
               <div className="relative">
                 <img src={nuevoProducto.imagen} alt="Preview" className="w-full h-48 object-cover rounded-lg" />
@@ -391,7 +426,10 @@ const agregarCarrito = (id: number) => {
                 type="text"
                 value={nuevoProducto.nombre}
                 onChange={(e) => setNuevoProducto({ ...nuevoProducto, nombre: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#2959c7] focus:outline-none"
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none transition-colors duration-300 ${darkMode
+                  ? 'bg-gray-700 border-gray-600 text-white focus:border-[#2959c7]'
+                  : 'bg-white border-gray-300 text-black focus:border-[#2959c7]'
+                  }`}
                 placeholder="Nombre del producto"
               />
 
@@ -399,14 +437,20 @@ const agregarCarrito = (id: number) => {
                 type="number"
                 value={nuevoProducto.precio}
                 onChange={(e) => setNuevoProducto({ ...nuevoProducto, precio: Number(e.target.value) })}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#2959c7] focus:outline-none text-2xl font-bold"
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none text-2xl font-bold transition-colors duration-300 ${darkMode
+                  ? 'bg-gray-700 border-gray-600 text-white focus:border-[#2959c7]'
+                  : 'bg-white border-gray-300 text-black focus:border-[#2959c7]'
+                  }`}
                 placeholder="Precio"
               />
 
               <select
                 value={nuevoProducto.categoria}
                 onChange={(e) => setNuevoProducto({ ...nuevoProducto, categoria: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-[#2959c7] focus:outline-none"
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:outline-none transition-colors duration-300 ${darkMode
+                  ? 'bg-gray-700 border-gray-600 text-white focus:border-[#2959c7]'
+                  : 'bg-white border-gray-300 text-black focus:border-[#2959c7]'
+                  }`}
               >
                 <option value="letras">Letras</option>
                 <option value="decoracion">Decoración</option>
@@ -419,7 +463,7 @@ const agregarCarrito = (id: number) => {
                   <input type="checkbox" checked={nuevoProducto.nuevo || false} onChange={(e) => setNuevoProducto({ ...nuevoProducto, nuevo: e.target.checked })} className="w-5 h-5" />
                   <span className="font-semibold">Nuevo</span>
                 </label>
-                
+
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" checked={nuevoProducto.destacado || false} onChange={(e) => setNuevoProducto({ ...nuevoProducto, destacado: e.target.checked })} className="w-5 h-5" />
                   <span className="font-semibold">Destacado</span>
@@ -435,6 +479,10 @@ const agregarCarrito = (id: number) => {
         </div>
       )}
 
+
+
+
+      {/* Hero Section */}
       <div className="pt-32">
         <div className="relative py-20 text-center text-white overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[#ff2e55] via-[#fe3158] to-[#2959c7]"></div>
@@ -450,28 +498,35 @@ const agregarCarrito = (id: number) => {
           </div>
         </div>
 
+        {/* Stats Cards */}
         <div className="max-w-7xl mx-auto px-6 md:px-8 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
+            <div className={`p-6 rounded-2xl border text-center transition-colors duration-300 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              }`}>
               <p className="text-3xl font-bold bg-gradient-to-r from-[#2959c7] to-[#ff2e55] bg-clip-text text-transparent">{productos.length}</p>
-              <p className="text-sm text-gray-600 mt-1">Productos</p>
+              <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Productos</p>
             </div>
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
+            <div className={`p-6 rounded-2xl border text-center transition-colors duration-300 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              }`}>
               <p className="text-3xl font-bold bg-gradient-to-r from-[#ff2e55] to-[#2959c7] bg-clip-text text-transparent">{categorias.length - 1}</p>
-              <p className="text-sm text-gray-600 mt-1">Categorías</p>
+              <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Categorías</p>
             </div>
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
+            <div className={`p-6 rounded-2xl border text-center transition-colors duration-300 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              }`}>
               <p className="text-3xl font-bold bg-gradient-to-r from-[#2959c7] to-[#ff2e55] bg-clip-text text-transparent">{productos.filter(p => p.nuevo).length}</p>
-              <p className="text-sm text-gray-600 mt-1">Nuevos</p>
+              <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Nuevos</p>
             </div>
-            <div className="bg-white p-6 rounded-2xl border border-gray-200 text-center">
+            <div className={`p-6 rounded-2xl border text-center transition-colors duration-300 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
+              }`}>
               <p className="text-3xl font-bold bg-gradient-to-r from-[#ff2e55] to-[#2959c7] bg-clip-text text-transparent">{productos.filter(p => p.destacado).length}</p>
-              <p className="text-sm text-gray-600 mt-1">Destacados</p>
+              <p className={`text-sm mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>Destacados</p>
             </div>
           </div>
 
+          {/* Filtros de Categoría */}
           <div className="mb-12">
-            <div className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-[#ff2e55]/10 to-[#2959c7]/10 rounded-full">
+            <div className={`inline-block mb-6 px-4 py-2 rounded-full transition-colors duration-300 ${darkMode ? 'bg-gradient-to-r from-[#ff2e55]/20 to-[#2959c7]/20' : 'bg-gradient-to-r from-[#ff2e55]/10 to-[#2959c7]/10'
+              }`}>
               <span className="text-sm font-semibold bg-gradient-to-r from-[#ff2e55] to-[#2959c7] bg-clip-text text-transparent">
                 FILTRAR POR CATEGORÍA
               </span>
@@ -481,16 +536,17 @@ const agregarCarrito = (id: number) => {
                 const isActive = filtro === cat;
                 const Icon = cat !== 'todos' ? CATEGORIA_INFO[cat as keyof typeof CATEGORIA_INFO]?.icon : Package;
                 const gradientColor = cat !== 'todos' ? CATEGORIA_INFO[cat as keyof typeof CATEGORIA_INFO]?.color : 'from-[#2959c7] to-[#ff2e55]';
-                
+
                 return (
                   <button
                     key={cat}
                     onClick={() => handleFiltro(cat)}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
-                      isActive
-                        ? `bg-gradient-to-r ${gradientColor} text-white shadow-lg transform scale-105`
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${isActive
+                      ? `bg-gradient-to-r ${gradientColor} text-white shadow-lg transform scale-105`
+                      : darkMode
+                        ? 'bg-gray-800 text-gray-200 hover:bg-gray-700 border border-gray-700'
                         : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
-                    }`}
+                      }`}
                   >
                     {Icon && <Icon size={18} />}
                     <span>{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
@@ -500,17 +556,24 @@ const agregarCarrito = (id: number) => {
             </div>
           </div>
 
+
+
+
+
+
+          {/* Grid de Productos */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {productosFiltrados.map(producto => {
               const enEdicion = editingId === producto.id;
               const datos = enEdicion ? editData : producto;
-              
+
               return (
                 <div
                   key={producto.id}
-                  className={`group bg-white rounded-2xl overflow-hidden transition-all duration-300 shadow-lg border-2 ${
-                    enEdicion ? 'border-green-500 scale-105' : 'border-gray-200 hover:scale-105 hover:shadow-2xl'
-                  }`}
+                  className={`group rounded-2xl overflow-hidden transition-all duration-300 shadow-lg border-2 ${enEdicion ? 'border-green-500 scale-105' : darkMode
+                    ? 'border-gray-700 hover:scale-105 hover:shadow-2xl bg-gray-800'
+                    : 'border-gray-200 hover:scale-105 hover:shadow-2xl bg-white'
+                    }`}
                 >
                   <div className="relative overflow-hidden">
                     <img
@@ -518,7 +581,7 @@ const agregarCarrito = (id: number) => {
                       alt={datos.nombre || producto.nombre}
                       className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    
+
                     {isAdmin && enEdicion && (
                       <div className="absolute inset-0 bg-black/50 flex items-center justify-center gap-2">
                         {uploadingImage ? (
@@ -550,7 +613,7 @@ const agregarCarrito = (id: number) => {
                         )}
                       </div>
                     )}
-                    
+
                     <div className="absolute top-3 right-3 flex flex-col gap-2">
                       {datos.nuevo && (
                         <span className="bg-gradient-to-r from-[#ff2e55] to-[#fe3158] text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
@@ -564,7 +627,7 @@ const agregarCarrito = (id: number) => {
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="p-5">
                     {enEdicion ? (
                       <div className="space-y-3">
@@ -572,22 +635,25 @@ const agregarCarrito = (id: number) => {
                           type="text"
                           value={datos.nombre}
                           onChange={(e) => setEditData({ ...editData, nombre: e.target.value })}
-                          className="w-full px-3 py-2 border rounded-lg font-bold"
+                          className={`w-full px-3 py-2 border rounded-lg font-bold transition-colors duration-300 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-black'
+                            }`}
                           placeholder="Nombre"
                         />
-                        
+
                         <input
                           type="number"
                           value={datos.precio}
                           onChange={(e) => setEditData({ ...editData, precio: Number(e.target.value) })}
-                          className="w-full px-3 py-2 border rounded-lg text-2xl font-bold"
+                          className={`w-full px-3 py-2 border rounded-lg text-2xl font-bold transition-colors duration-300 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-black'
+                            }`}
                           placeholder="Precio"
                         />
 
                         <select
                           value={datos.categoria}
                           onChange={(e) => setEditData({ ...editData, categoria: e.target.value })}
-                          className="w-full px-3 py-2 border rounded-lg"
+                          className={`w-full px-3 py-2 border rounded-lg transition-colors duration-300 ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300 text-black'
+                            }`}
                         >
                           <option value="letras">Letras</option>
                           <option value="decoracion">Decoración</option>
@@ -605,7 +671,7 @@ const agregarCarrito = (id: number) => {
                             />
                             <span className="text-sm">Nuevo</span>
                           </label>
-                          
+
                           <label className="flex items-center gap-2 cursor-pointer">
                             <input
                               type="checkbox"
@@ -626,120 +692,133 @@ const agregarCarrito = (id: number) => {
                             Guardar
                           </button>
                           <button
-                        onClick={cancelarEdicion}
-                        className="flex-1 bg-gray-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-600 transition"
-                      >
-                        <X size={18} />
-                        Cancelar
-                      </button>
-                    </div>
+                            onClick={cancelarEdicion}
+                            className="flex-1 bg-gray-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-600 transition"
+                          >
+                            <X size={18} />
+                            Cancelar
+                          </button>
+                        </div>
 
-                    <button
-                      onClick={() => setShowDeleteConfirm(producto.id)}
-                      className="w-full bg-red-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-red-600 transition"
-                    >
-                      <Trash2 size={18} />
-                      Eliminar Producto
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <div className="mb-3">
-                      <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                        {producto.categoria}
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-bold mb-3 group-hover:text-[#ff2e55] transition-colors">
-                      {producto.nombre}
-                    </h3>
-                    <div className="flex items-center justify-between mb-4">
-                      <p className="text-gray-600 text-3xl font-bold">
-                        ${producto.precio}
-                      </p>
-                      <span className="text-xs text-gray-500">MXN</span>
-                    </div>
-                    
-                    {isAdmin ? (
-                      <button
-                        onClick={() => iniciarEdicion(producto)}
-                        className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105"
-                      >
-                        <Edit2 size={20} />
-                        Editar
-                      </button>
+                        <button
+                          onClick={() => setShowDeleteConfirm(producto.id)}
+                          className="w-full bg-red-500 text-white py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-red-600 transition"
+                        >
+                          <Trash2 size={18} />
+                          Eliminar Producto
+                        </button>
+                      </div>
                     ) : (
-                      <button
-                        id={`btn-${producto.id}`}
-                        onClick={() => agregarCarrito(producto.id)}
-                        className="w-full bg-gradient-to-r from-[#ff2e55] to-[#fe3158] hover:from-[#fe3158] hover:to-[#ff2e55] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105"
-                      >
-                        <ShoppingCart size={20} />
-                        Agregar
-                      </button>
+                      <>
+                        <div className="mb-3">
+                          <span className={`text-xs font-semibold uppercase tracking-wide ${darkMode ? 'text-gray-400' : 'text-gray-500'
+                            }`}>
+                            {producto.categoria}
+                          </span>
+                        </div>
+                        <h3 className={`text-lg font-bold mb-3 group-hover:text-[#ff2e55] transition-colors ${darkMode ? 'text-white' : 'text-black'
+                          }`}>
+                          {producto.nombre}
+                        </h3>
+                        <div className="flex items-center justify-between mb-4">
+                          <p className={`text-3xl font-bold ${darkMode ? 'text-gray-200' : 'text-gray-600'}`}>
+                            ${producto.precio}
+                          </p>
+                          <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>MXN</span>
+                        </div>
+
+                        {isAdmin ? (
+                          <button
+                            onClick={() => iniciarEdicion(producto)}
+                            className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105"
+                          >
+                            <Edit2 size={20} />
+                            Editar
+                          </button>
+                        ) : (
+                          <button
+                            id={`btn-${producto.id}`}
+                            onClick={() => agregarCarrito(producto.id)}
+                            className="w-full bg-gradient-to-r from-[#ff2e55] to-[#fe3158] hover:from-[#fe3158] hover:to-[#ff2e55] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-md hover:shadow-xl transform hover:scale-105"
+                          >
+                            <ShoppingCart size={20} />
+                            Agregar
+                          </button>
+                        )}
+                      </>
                     )}
-                  </>
-                )}
-              </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+
+
+
+
+
+
+          {/* Mensaje cuando no hay productos */}
+          {productosFiltrados.length === 0 && (
+            <div className="text-center py-20">
+              <Package size={64} className={`mx-auto mb-4 ${darkMode ? 'text-gray-600' : 'text-gray-300'}`} />
+              <h3 className={`text-2xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-black'}`}>No hay productos</h3>
+              <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>
+                No se encontraron productos en esta categoría
+              </p>
             </div>
-          );
-        })}
+          )}
+
+          {/* Call to Action */}
+          <div className="mt-20 text-center bg-gradient-to-br from-[#2959c7] to-[#ff2e55] rounded-3xl p-12 md:p-16 text-white relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+            </div>
+            <div className="relative z-10">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">¿No encuentras lo que buscas?</h2>
+              <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                Creamos productos personalizados según tus necesidades. ¡Contáctanos!
+              </p>
+              <button className="inline-block bg-white text-[#2959c7] px-8 py-4 rounded-xl font-bold text-lg hover:transform hover:scale-105 transition-all duration-300 shadow-xl">
+                Contactar
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {productosFiltrados.length === 0 && (
-        <div className="text-center py-20">
-          <Package size={64} className="mx-auto text-gray-300 mb-4" />
-          <h3 className="text-2xl font-bold mb-2">No hay productos</h3>
-          <p className="text-gray-600">
-            No se encontraron productos en esta categoría
-          </p>
+      {/* Modal Confirmar Eliminación */}
+      {showDeleteConfirm !== null && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className={`rounded-2xl p-8 max-w-md w-full shadow-2xl transition-colors duration-300 ${darkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'
+            }`}>
+            <div className="text-center mb-6">
+              <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                <Trash2 size={32} className="text-red-500" />
+              </div>
+              <h2 className="text-2xl font-bold mb-2">¿Eliminar producto?</h2>
+              <p className={darkMode ? 'text-gray-400' : 'text-gray-600'}>Esta acción no se puede deshacer</p>
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(null)}
+                className={`flex-1 py-3 rounded-xl font-bold transition ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  }`}
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={() => eliminarProducto(showDeleteConfirm)}
+                className="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition"
+              >
+                Eliminar
+              </button>
+            </div>
+          </div>
         </div>
       )}
-
-      <div className="mt-20 text-center bg-gradient-to-br from-[#2959c7] to-[#ff2e55] rounded-3xl p-12 md:p-16 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        </div>
-        <div className="relative z-10">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">¿No encuentras lo que buscas?</h2>
-          <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-            Creamos productos personalizados según tus necesidades. ¡Contáctanos!
-          </p>
-          <button className="inline-block bg-white text-[#2959c7] px-8 py-4 rounded-xl font-bold text-lg hover:transform hover:scale-105 transition-all duration-300 shadow-xl">
-            Contactar
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
-
-  {showDeleteConfirm !== null && (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl">
-        <div className="text-center mb-6">
-          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-            <Trash2 size={32} className="text-red-500" />
-          </div>
-          <h2 className="text-2xl font-bold mb-2">¿Eliminar producto?</h2>
-          <p className="text-gray-600">Esta acción no se puede deshacer</p>
-        </div>
-        
-        <div className="flex gap-3">
-          <button
-            onClick={() => setShowDeleteConfirm(null)}
-            className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-xl font-bold hover:bg-gray-300 transition"
-          >
-            Cancelar
-          </button>
-          <button
-            onClick={() => eliminarProducto(showDeleteConfirm)}
-            className="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition"
-          >
-            Eliminar
-          </button>
-        </div>
-      </div>
-    </div>
-  )}
-</div>
-);
+  );
 }

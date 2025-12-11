@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Home, Package, MapPin, Users, Menu, X, ShoppingCart, Check } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 
 const navItems = [
   { href: '/', label: 'Inicio', icon: Home },
@@ -17,6 +18,7 @@ export default function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,47 +33,74 @@ export default function Header() {
       const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
       setCartCount(carrito.length);
     };
-    
+
     const carrito = JSON.parse(localStorage.getItem('carrito') || '[]');
     setCartCount(carrito.length);
-    
-    // Escuchar eventos personalizados del carrito
+
     const handleCartEvent = (e: any) => {
       updateCartCount();
+
       if (e.detail?.message) {
         setToastMessage(e.detail.message);
         setShowToast(true);
         setTimeout(() => setShowToast(false), 2000);
       }
     };
-    
+
     window.addEventListener('cartUpdated', updateCartCount);
     window.addEventListener('cartAction', handleCartEvent);
+
     return () => {
       window.removeEventListener('cartUpdated', updateCartCount);
       window.removeEventListener('cartAction', handleCartEvent);
     };
   }, []);
 
+  useEffect(() => {
+    const saved = localStorage.getItem('darkMode');
+    if (saved === 'true') {
+      setDarkMode(true);
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    localStorage.setItem('darkMode', String(newMode));
+
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    window.dispatchEvent(new Event('darkModeChanged'));
+  };
+
   return (
-    <header 
+    <header
       className={`fixed top-0 w-full px-4 md:px-8 py-4 z-50 transition-all duration-300 ${
-        scrolled 
-          ? 'bg-white/95 backdrop-blur-lg shadow-lg' 
+        scrolled
+          ? darkMode
+            ? 'bg-gray-900/95 backdrop-blur-lg shadow-lg shadow-gray-900/50'
+            : 'bg-white/95 backdrop-blur-lg shadow-lg'
+          : darkMode
+          ? 'bg-gray-900/80 backdrop-blur-md'
           : 'bg-white/80 backdrop-blur-md'
       }`}
     >
-      <div className="flex items-center justify-between max-w-7xl mx-auto">
+      <div className="flex items-center justify-between max-w-9xl mx-auto">
         <div className="flex items-center gap-3">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-r from-[#2959c7] to-[#fe3158] rounded-full blur-md opacity-50"></div>
-            <img 
-              src="logo/logo.jpg" 
-              alt="SIDDHI" 
-              className="relative w-10 h-10 md:w-12 md:h-12 object-contain rounded-full ring-2 ring-white shadow-lg" 
+            <img
+              src="logo/logo.jpg"
+              alt="SIDDHI"
+              className="relative w-10 h-10 md:w-12 md:h-12 object-contain rounded-full ring-2 ring-white shadow-lg"
             />
           </div>
-          <span className="hidden md:block text-xl font-bold bg-gradient-to-r from-[#2959c7] to-[#fe3158] bg-clip-text text-transparent">
+          <span className={`hidden md:block text-xl font-bold bg-gradient-to-r from-[#2959c7] to-[#fe3158] bg-clip-text text-transparent`}>
             GRUPO SIDDHI
           </span>
         </div>
@@ -87,6 +116,8 @@ export default function Header() {
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300 ${
                   hoveredIndex === index
                     ? 'bg-gradient-to-r from-[#2959c7] to-[#fe3158] text-white shadow-lg transform scale-105'
+                    : darkMode
+                    ? 'text-gray-200 hover:bg-gray-800'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
                 onMouseEnter={() => setHoveredIndex(index)}
@@ -97,11 +128,15 @@ export default function Header() {
               </a>
             );
           })}
-          
+
           {/* Carrito Icon */}
-          <a 
+          <a
             href="/carrito"
-            className="relative ml-2 p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            className={`relative ml-2 p-2 rounded-lg transition-colors ${
+              darkMode
+                ? 'text-gray-200 hover:bg-gray-800'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
           >
             <ShoppingCart size={20} />
             {cartCount > 0 && (
@@ -110,13 +145,34 @@ export default function Header() {
               </span>
             )}
           </a>
+
+          {/* Botón de modo oscuro */}
+          <button
+            onClick={toggleDarkMode}
+            className={`relative ml-2 p-2 rounded-lg transition-all duration-300 ${
+              darkMode
+                ? 'text-yellow-400 hover:bg-gray-800'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+            title={darkMode ? 'Modo claro' : 'Modo oscuro'}
+          >
+            {darkMode ? (
+              <Sun size={24} className="text-yellow-400" />
+            ) : (
+              <Moon size={24} />
+            )}
+          </button>
         </nav>
 
         {/* Mobile menu button */}
         <div className="md:hidden flex items-center gap-2">
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="relative p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            className={`relative p-2 rounded-lg transition-colors ${
+              darkMode
+                ? 'text-gray-200 hover:bg-gray-800'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
             {cartCount > 0 && (
@@ -130,7 +186,7 @@ export default function Header() {
 
       {/* Mobile menu overlay - cierra menú al hacer clic fuera */}
       {isOpen && (
-        <div 
+        <div
           className="md:hidden fixed inset-0 top-16 bg-black/30 z-30"
           onClick={() => setIsOpen(false)}
         />
@@ -138,7 +194,9 @@ export default function Header() {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden absolute top-full left-0 right-0 bg-white shadow-2xl transition-all duration-300 z-40 ${
+        className={`md:hidden absolute top-full left-0 right-0 shadow-2xl transition-all duration-300 z-40 ${
+          darkMode ? 'bg-gray-900' : 'bg-white'
+        } ${
           isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'
         }`}
       >
@@ -150,19 +208,27 @@ export default function Header() {
                 key={index}
                 href={item.href}
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gradient-to-r hover:from-[#2959c7] hover:to-[#fe3158] hover:text-white transition-all duration-300"
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 ${
+                  darkMode
+                    ? 'text-gray-200 hover:bg-gradient-to-r hover:from-[#2959c7] hover:to-[#fe3158] hover:text-white'
+                    : 'text-gray-700 hover:bg-gradient-to-r hover:from-[#2959c7] hover:to-[#fe3158] hover:text-white'
+                }`}
               >
                 <Icon size={20} />
                 <span className="font-medium">{item.label}</span>
               </a>
             );
           })}
-          
+
           {/* Carrito in mobile menu */}
-          <a 
+          <a
             href="/carrito"
             onClick={() => setIsOpen(false)}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gradient-to-r hover:from-[#2959c7] hover:to-[#fe3158] hover:text-white transition-all duration-300 relative"
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 relative ${
+              darkMode
+                ? 'text-gray-200 hover:bg-gradient-to-r hover:from-[#2959c7] hover:to-[#fe3158] hover:text-white'
+                : 'text-gray-700 hover:bg-gradient-to-r hover:from-[#2959c7] hover:to-[#fe3158] hover:text-white'
+            }`}
           >
             <ShoppingCart size={20} />
             <span className="font-medium">Carrito</span>
@@ -172,6 +238,28 @@ export default function Header() {
               </span>
             )}
           </a>
+
+          {/* Botón de modo oscuro en menú móvil */}
+          <button
+            onClick={toggleDarkMode}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 ${
+              darkMode
+                ? 'text-gray-200 hover:bg-gray-800'
+                : 'text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            {darkMode ? (
+              <>
+                <Sun size={20} className="text-yellow-400" />
+                <span className="font-medium">Modo claro</span>
+              </>
+            ) : (
+              <>
+                <Moon size={20} />
+                <span className="font-medium">Modo oscuro</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 

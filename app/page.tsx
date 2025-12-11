@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   const images = [
     "/img/fondo-home.png",
@@ -30,18 +31,27 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-
-
+  // Detectar modo oscuro inicial y escuchar cambios
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+    const checkDarkMode = () => {
+      const isDark = localStorage.getItem('darkMode') === 'true';
+      setDarkMode(isDark);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    checkDarkMode();
+
+    const handleDarkModeChange = () => {
+      checkDarkMode();
+    };
+
+    window.addEventListener('darkModeChanged', handleDarkModeChange);
+    return () => window.removeEventListener('darkModeChanged', handleDarkModeChange);
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white font-poppins">
+    <div className={`min-h-screen font-poppins transition-colors duration-300 ${
+      darkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-900'
+    }`}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
         
@@ -137,32 +147,45 @@ export default function Home() {
       <section 
         className="relative h-screen w-full flex items-center justify-center pt-20 overflow-hidden"
       >
-        {/* Fondo con animación Ken Burns (usa imagen en public/) */}
+        {/* Fondo con animación Ken Burns */}
         <div className="absolute inset-0 z-0 overflow-hidden">
-          
-      <div
-        className="absolute inset-0 bg-center bg-cover bg-kenburns z-0 transition-all duration-1000 ease-in-out"
-        style={{ backgroundImage: `url(${images[currentIndex]})` }}
-      />
+          <div
+            className="absolute inset-0 bg-center bg-cover bg-kenburns z-0 transition-all duration-1000 ease-in-out"
+            style={{ backgroundImage: `url(${images[currentIndex]})` }}
+          />
 
-          {/* overlay para mejorar contraste del texto (light/dark) */}
-          <div className="absolute inset-0 z-10 bg-white/30" />
+          {/* Overlay adaptativo según modo oscuro */}
+          <div className={`absolute inset-0 z-10 transition-colors duration-300 ${
+            darkMode ? 'bg-black/50' : 'bg-white/30'
+          }`} />
 
-          {/* Elementos decorativos */}
-          <div className="absolute top-20 left-10 w-64 h-64 bg-gray-700 rounded-full mix-blend-multiply filter blur-3xl opacity-20 z-10"></div>
-          <div className="absolute bottom-20 right-10 w-64 h-64 bg-gray-600 rounded-full mix-blend-multiply filter blur-3xl opacity-20 z-10"></div>
+          {/* Elementos decorativos adaptativos */}
+          <div className={`absolute top-20 left-10 w-64 h-64 rounded-full mix-blend-multiply filter blur-3xl opacity-20 z-10 transition-colors duration-300 ${
+            darkMode ? 'bg-blue-500' : 'bg-gray-700'
+          }`}></div>
+          <div className={`absolute bottom-20 right-10 w-64 h-64 rounded-full mix-blend-multiply filter blur-3xl opacity-20 z-10 transition-colors duration-300 ${
+            darkMode ? 'bg-purple-500' : 'bg-gray-600'
+          }`}></div>
         </div>
 
         <div className="text-center z-10 px-4">
-          <h1 className="text-6xl md:text-7xl font-bold mb-4 animate-fade-in-down">
+          <h1 className={`text-6xl md:text-7xl font-bold mb-4 animate-fade-in-down transition-colors duration-300 ${
+            darkMode ? 'text-white' : 'text-gray-900'
+          }`}>
             GRUPO SIDDHI
           </h1>
-          <p className="text-xl md:text-2xl opacity-90 mb-8 animate-fade-in-up max-w-2xl mx-auto">
+          <p className={`text-xl md:text-2xl mb-8 animate-fade-in-up max-w-2xl mx-auto transition-colors duration-300 ${
+            darkMode ? 'text-gray-200' : 'text-gray-700'
+          }`}>
             Diseño y corte de precisión en Zumpango
           </p>
           <Link
             href="/catalogo"
-            className="inline-block bg-white text-black hover:bg-gray-200 font-semibold px-8 py-4 rounded-lg transition-all duration-300 animate-fade-in-up hover:scale-105 hover:shadow-2xl"
+            className={`inline-block font-semibold px-8 py-4 rounded-lg transition-all duration-300 animate-fade-in-up hover:scale-105 hover:shadow-2xl ${
+              darkMode 
+                ? 'bg-gradient-to-r from-[#2959c7] to-[#fe3158] text-white hover:from-[#1e4aa8] hover:to-[#e12847]' 
+                : 'bg-white text-black hover:bg-gray-200'
+            }`}
           >
             Ver catálogo
           </Link>
